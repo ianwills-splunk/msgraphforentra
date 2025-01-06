@@ -1,6 +1,6 @@
 {
     "appid": "bf5de8fd-6437-4fc9-8c33-5f5bd3971d26",
-    "name": "Microsoft Graph For Entra",
+    "name": "MS Graph for Entra",
     "description": "This app integrates with Microsoft Entra to execute various generic and investigative actions",
     "type": "endpoint",
     "product_vendor": "Microsoft",
@@ -10,6 +10,11 @@
     "python_version": "3",
     "product_version_regex": ".*",
     "publisher": "Splunk",
+    "contributors": [
+        {
+            "name": "Ian Wills"
+        }
+    ],
     "license": "Copyright (c) 2022-2024 Splunk Inc.",
     "app_version": "1.0.0",
     "utctime_updated": "2024-12-17T19:23:33.000000Z",

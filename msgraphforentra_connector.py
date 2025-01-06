@@ -1257,10 +1257,12 @@ class MsGraphForEntra_Connector(BaseConnector):
         filter_risky_users = config.get(MSGENTRA_CONFIG_FILTER_RISKY_USERS_SCHEDULED_POLL)
         risk_detections_last_modified_time = (
             datetime.now() - timedelta(days=MSGENTRA_DEFAULT_LOOKBACK_DAYS)
-            ).strftime(MSGENTRA_APP_DT_STR_FORMAT)  # Let's fall back to the last 7 days
+        ).strftime(MSGENTRA_APP_DT_STR_FORMAT)  # Let's fall back to the last 7 days
+
         risky_users_last_modified_time = (
             datetime.now() - timedelta(days=MSGENTRA_DEFAULT_LOOKBACK_DAYS)
-            ).strftime(MSGENTRA_APP_DT_STR_FORMAT)  # Let's fall back to the last 7 days
+        ).strftime(MSGENTRA_APP_DT_STR_FORMAT)  # Let's fall back to the last 7 days
+
         if start_time_scheduled_poll:
             ret_val = self._check_date_format(action_result, start_time_scheduled_poll)
             # if date format is not valid
@@ -1305,7 +1307,7 @@ class MsGraphForEntra_Connector(BaseConnector):
 
         risk_detections_list = self._paginator(
             action_result, max_ingestions, MSGENTRA_INGESTION_DEFAULT_PAGE_SIZE, endpoint, poll_filter, orderby
-            )
+        )
         if not risk_detections_list and not isinstance(risk_detections_list, list):  # Failed to fetch risk detections, regardless of the reason
             self.save_progress("Failed to retrieve risk detections")
             return action_result.get_status()
@@ -1322,7 +1324,7 @@ class MsGraphForEntra_Connector(BaseConnector):
             try:
                 self._ingest_artifacts_new(
                     artifacts, name=f'Risk Detection: {risk_detection["riskEventType"]}', key=risk_detection["id"], eventType='riskyDetection'
-                    )
+                )
             except Exception as e:
                 self.debug_print("Error occurred while saving artifacts for risk detections. Error: {}".format(str(e)))
 
@@ -1359,7 +1361,7 @@ class MsGraphForEntra_Connector(BaseConnector):
             try:
                 self._ingest_artifacts_new(
                     artifacts, name=f'Risky User: {risky_user["userDisplayName"]}', key=risky_user["id"], eventType='riskyUser'
-                    )
+                )
             except Exception as e:
                 self.debug_print("Error occurred while saving artifacts for riskyUsers. Error: {}".format(str(e)))
 
