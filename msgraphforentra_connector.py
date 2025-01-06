@@ -116,29 +116,29 @@ def _handle_rest_request(request, path_parts):
 
 
 def _handle_login_redirect(request, key):
-    """ This function is used to redirect login request to Microsoft login page.
+    """This function is used to redirect login request to Microsoft login page.
 
     :param request: Data given to REST endpoint
     :param key: Key to search in state file
     :return: response authorization_url/admin_consent_url
     """
 
-    asset_id = request.GET.get('asset_id')
+    asset_id = request.GET.get("asset_id")
     if not asset_id:
-        return HttpResponse('ERROR: Asset ID not found in URL', content_type="text/plain", status=400)
+        return HttpResponse("ERROR: Asset ID not found in URL", content_type="text/plain", status=400)
     state = _load_app_state(asset_id)
     if not state:
-        return HttpResponse('ERROR: Invalid asset_id', content_type="text/plain", status=400)
+        return HttpResponse("ERROR: Invalid asset_id", content_type="text/plain", status=400)
     url = state.get(key)
     if not url:
-        return HttpResponse('App state is invalid, {key} not found.'.format(key=key), content_type="text/plain", status=400)
+        return HttpResponse("App state is invalid, {key} not found.".format(key=key), content_type="text/plain", status=400)
     response = HttpResponse(status=302)
-    response['Location'] = url
+    response["Location"] = url
     return response
 
 
 def _load_app_state(asset_id, app_connector=None):
-    """ This function is used to load the current state file.
+    """This function is used to load the current state file.
 
     :param asset_id: asset_id
     :param app_connector: Object of app_connector class
@@ -148,34 +148,34 @@ def _load_app_state(asset_id, app_connector=None):
     asset_id = str(asset_id)
     if not asset_id or not asset_id.isalnum():
         if app_connector:
-            app_connector.debug_print('In _load_app_state: Invalid asset_id')
+            app_connector.debug_print("In _load_app_state: Invalid asset_id")
         return {}
 
     app_dir = os.path.dirname(os.path.abspath(__file__))
-    state_file = '{0}/{1}_state.json'.format(app_dir, asset_id)
+    state_file = "{0}/{1}_state.json".format(app_dir, asset_id)
     real_state_file_path = os.path.abspath(state_file)
     if not os.path.dirname(real_state_file_path) == app_dir:
         if app_connector:
-            app_connector.debug_print('In _load_app_state: Invalid asset_id')
+            app_connector.debug_print("In _load_app_state: Invalid asset_id")
         return {}
 
     state = {}
     try:
-        with open(real_state_file_path, 'r') as state_file_obj:
+        with open(real_state_file_path, "r") as state_file_obj:
             state_file_data = state_file_obj.read()
             state = json.loads(state_file_data)
     except Exception as e:
         if app_connector:
-            app_connector.debug_print('In _load_app_state: Exception: {0}'.format(str(e)))
+            app_connector.debug_print("In _load_app_state: Exception: {0}".format(str(e)))
 
     if app_connector:
-        app_connector.debug_print('Loaded state: ', state)
+        app_connector.debug_print("Loaded state: ", state)
 
     return state
 
 
 def _save_app_state(state, asset_id, app_connector):
-    """ This function is used to save current state in file.
+    """This function is used to save current state in file.
 
     :param state: Dictionary which contains data to write in state file
     :param asset_id: asset_id
@@ -186,57 +186,57 @@ def _save_app_state(state, asset_id, app_connector):
     asset_id = str(asset_id)
     if not asset_id or not asset_id.isalnum():
         if app_connector:
-            app_connector.debug_print('In _save_app_state: Invalid asset_id')
+            app_connector.debug_print("In _save_app_state: Invalid asset_id")
         return {}
 
     app_dir = os.path.split(__file__)[0]
-    state_file = '{0}/{1}_state.json'.format(app_dir, asset_id)
+    state_file = "{0}/{1}_state.json".format(app_dir, asset_id)
 
     real_state_file_path = os.path.abspath(state_file)
     if not os.path.dirname(real_state_file_path) == app_dir:
         if app_connector:
-            app_connector.debug_print('In _save_app_state: Invalid asset_id')
+            app_connector.debug_print("In _save_app_state: Invalid asset_id")
         return {}
 
     if app_connector:
-        app_connector.debug_print('Saving state: ', state)
+        app_connector.debug_print("Saving state: ", state)
 
     try:
-        with open(real_state_file_path, 'w+') as state_file_obj:
+        with open(real_state_file_path, "w+") as state_file_obj:
             state_file_obj.write(json.dumps(state))
     except Exception as e:
-        print('Unable to save state file: {0}'.format(str(e)))
+        print("Unable to save state file: {0}".format(str(e)))
 
     return phantom.APP_SUCCESS
 
 
 def _handle_login_response(request):
-    """ This function is used to get the login response of authorization request from Microsoft login page.
+    """This function is used to get the login response of authorization request from Microsoft login page.
 
     :param request: Data given to REST endpoint
     :return: HttpResponse. The response displayed on authorization URL page
     """
 
-    asset_id = request.GET.get('state')
+    asset_id = request.GET.get("state")
     if not asset_id:
-        return HttpResponse('ERROR: Asset ID not found in URL\n{}'.format(json.dumps(request.GET)), content_type="text/plain", status=400)
+        return HttpResponse("ERROR: Asset ID not found in URL\n{}".format(json.dumps(request.GET)), content_type="text/plain", status=400)
 
     # Check for error in URL
-    error = request.GET.get('error')
-    error_description = request.GET.get('error_description')
+    error = request.GET.get("error")
+    error_description = request.GET.get("error_description")
 
     # If there is an error in response
     if error:
-        message = 'Error: {0}'.format(error)
+        message = "Error: {0}".format(error)
         if error_description:
-            message = '{0} Details: {1}'.format(message, error_description)
-        return HttpResponse('Server returned {0}'.format(message), content_type="text/plain", status=400)
+            message = "{0} Details: {1}".format(message, error_description)
+        return HttpResponse("Server returned {0}".format(message), content_type="text/plain", status=400)
 
     code = request.GET.get(MSGENTRA_CODE_STRING)
 
     # If code is not available
     if not code:
-        return HttpResponse('Error while authenticating\n{0}'.format(json.dumps(request.GET)), content_type="text/plain", status=400)
+        return HttpResponse("Error while authenticating\n{0}".format(json.dumps(request.GET)), content_type="text/plain", status=400)
 
     state = _load_app_state(asset_id)
 
@@ -249,20 +249,20 @@ def _handle_login_response(request):
 
     _save_app_state(state, asset_id, None)
 
-    return HttpResponse('Code received. Please close this window, the action will continue to get new token.', content_type="text/plain")
+    return HttpResponse("Code received. Please close this window, the action will continue to get new token.", content_type="text/plain")
 
 
 def _get_dir_name_from_app_name(app_name):
-    """ Get name of the directory for the app.
+    """Get name of the directory for the app.
 
     :param app_name: Name of the application for which directory name is required
     :return: app_name: Name of the directory for the application
     """
 
-    app_name = ''.join([x for x in app_name if x.isalnum()])
+    app_name = "".join([x for x in app_name if x.isalnum()])
     app_name = app_name.lower()
     if not app_name:
-        app_name = 'app_for_phantom'
+        app_name = "app_for_phantom"
     return app_name
 
 
@@ -353,7 +353,7 @@ class MsGraphForEntra_Connector(BaseConnector):
         return state
 
     def _process_empty_response(self, response, action_result):
-        """ This function is used to process empty response.
+        """This function is used to process empty response.
 
         :param response: response data
         :param action_result: object of Action Result
@@ -363,11 +363,15 @@ class MsGraphForEntra_Connector(BaseConnector):
         if response.status_code in [200, 204]:
             return RetVal(phantom.APP_SUCCESS, {})
 
-        return RetVal(action_result.set_status(
-            phantom.APP_ERROR, "Status Code: {0}. Error: Empty response and no information in the header".format(response.status_code)), None)
+        return RetVal(
+            action_result.set_status(
+                phantom.APP_ERROR, "Status Code: {0}. Error: Empty response and no information in the header".format(response.status_code)
+            ),
+            None,
+        )
 
     def _process_html_response(self, response, action_result):
-        """ This function is used to process html response.
+        """This function is used to process html response.
 
         :param response: response data
         :param action_result: object of Action Result
@@ -383,9 +387,9 @@ class MsGraphForEntra_Connector(BaseConnector):
             for element in soup(["script", "style", "footer", "nav"]):
                 element.extract()
             error_text = soup.text
-            split_lines = error_text.split('\n')
+            split_lines = error_text.split("\n")
             split_lines = [x.strip() for x in split_lines if x.strip()]
-            error_text = '\n'.join(split_lines)
+            error_text = "\n".join(split_lines)
         except Exception:
             error_text = "Cannot parse error details"
 
@@ -394,12 +398,12 @@ class MsGraphForEntra_Connector(BaseConnector):
 
         message = "Status Code: {0}. Data from server:\n{1}\n".format(status_code, error_text)
 
-        message = message.replace('{', '{{').replace('}', '}}')
+        message = message.replace("{", "{{").replace("}", "}}")
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
     def _process_json_response(self, response, action_result):
-        """ This function is used to process json response.
+        """This function is used to process json response.
 
         :param response: response data
         :param action_result: object of Action Result
@@ -410,8 +414,12 @@ class MsGraphForEntra_Connector(BaseConnector):
             # Process a json response
             resp_json = response.json()
         except Exception as e:
-            return RetVal(action_result.set_status(phantom.APP_ERROR, "Unable to parse JSON response. Error: {0}"
-                                                   .format(self._get_error_message_from_exception(e))), None)
+            return RetVal(
+                action_result.set_status(
+                    phantom.APP_ERROR, "Unable to parse JSON response. Error: {0}".format(self._get_error_message_from_exception(e))
+                ),
+                None,
+            )
 
         # Please specify the status codes here
         if 200 <= response.status_code < 399:
@@ -421,32 +429,36 @@ class MsGraphForEntra_Connector(BaseConnector):
 
         # Check whether the response contains error and error description fields
         # This condition will be used in test_connectivity
-        if not isinstance(resp_json.get('error'), dict) and resp_json.get('error_description'):
+        if not isinstance(resp_json.get("error"), dict) and resp_json.get("error_description"):
             err = "Error:{0}, Error Description:{1} Please check your asset configuration parameters and run the test connectivity".format(
-                    resp_json.get('error'), resp_json.get('error_description'))
+                resp_json.get("error"), resp_json.get("error_description")
+            )
             message = "Error from server. Status Code: {0} Data from server: {1}".format(response.status_code, err)
 
         # For other actions
-        if isinstance(resp_json.get('error'), dict) and resp_json.get('error', {}).get(MSGENTRA_CODE_STRING):
-            msg = resp_json.get('error', {}).get('message')
-            if 'text/html' in msg:
+        if isinstance(resp_json.get("error"), dict) and resp_json.get("error", {}).get(MSGENTRA_CODE_STRING):
+            msg = resp_json.get("error", {}).get("message")
+            if "text/html" in msg:
                 msg = BeautifulSoup(msg, "html.parser")
                 for element in msg(["title"]):
                     element.extract()
                 message = "Error from server. Status Code: {0} Error Code: {1} Data from server: {2}".format(
-                    response.status_code, resp_json.get('error', {}).get(MSGENTRA_CODE_STRING), msg.text)
+                    response.status_code, resp_json.get("error", {}).get(MSGENTRA_CODE_STRING), msg.text
+                )
             else:
                 message = "Error from server. Status Code: {0} Error Code: {1} Data from server: {2}".format(
-                    response.status_code, resp_json.get('error', {}).get(MSGENTRA_CODE_STRING), msg)
+                    response.status_code, resp_json.get("error", {}).get(MSGENTRA_CODE_STRING), msg
+                )
 
         if not message:
-            message = "Error from server. Status Code: {0} Data from server: {1}"\
-                .format(response.status_code, response.text.replace('{', '{{').replace('}', '}}'))
+            message = "Error from server. Status Code: {0} Data from server: {1}".format(
+                response.status_code, response.text.replace("{", "{{").replace("}", "}}")
+            )
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
     def _process_response(self, response, action_result):
-        """ This function is used to process html response.
+        """This function is used to process html response.
 
         :param response: response data
         :param action_result: object of Action Result
@@ -454,24 +466,24 @@ class MsGraphForEntra_Connector(BaseConnector):
         """
 
         # store the response_text in debug data, it will get dumped in the logs if the action fails
-        if hasattr(action_result, 'add_debug_data'):
-            action_result.add_debug_data({'r_status_code': response.status_code})
-            action_result.add_debug_data({'r_text': response.text})
-            action_result.add_debug_data({'r_headers': response.headers})
+        if hasattr(action_result, "add_debug_data"):
+            action_result.add_debug_data({"r_status_code": response.status_code})
+            action_result.add_debug_data({"r_text": response.text})
+            action_result.add_debug_data({"r_headers": response.headers})
 
         # Process each 'Content-Type' of response separately
 
-        if 'json' in response.headers.get('Content-Type', ''):
+        if "json" in response.headers.get("Content-Type", ""):
             return self._process_json_response(response, action_result)
 
-        if 'text/javascript' in response.headers.get('Content-Type', ''):
+        if "text/javascript" in response.headers.get("Content-Type", ""):
             return self._process_json_response(response, action_result)
 
         # Process an HTML response, Do this no matter what the api talks.
         # There is a high chance of a PROXY in between SOAR and the rest of
         # world, in case of errors, PROXY's return HTML, this function parses
         # the error and adds it to the action_result.
-        if 'html' in response.headers.get('Content-Type', ''):
+        if "html" in response.headers.get("Content-Type", ""):
             return self._process_html_response(response, action_result)
 
         # it's not content-type that is to be parsed, handle an empty response
@@ -480,7 +492,8 @@ class MsGraphForEntra_Connector(BaseConnector):
 
         # everything else is actually an error at this point
         message = "Can't process response from server. Status Code: {0} Data from server: {1}".format(
-            response.status_code, response.text.replace('{', '{{').replace('}', '}}'))
+            response.status_code, response.text.replace("{", "{{").replace("}", "}}")
+        )
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
@@ -533,8 +546,8 @@ class MsGraphForEntra_Connector(BaseConnector):
 
         return error_text
 
-    def _update_request(self, action_result, endpoint, headers=None, params=None, data=None, method='get'):
-        """ This function is used to update the headers with access_token before making REST call.
+    def _update_request(self, action_result, endpoint, headers=None, params=None, data=None, method="get"):
+        """This function is used to update the headers with access_token before making REST call.
 
         :param endpoint: REST endpoint that needs to appended to the service address
         :param action_result: object of ActionResult class
@@ -551,18 +564,18 @@ class MsGraphForEntra_Connector(BaseConnector):
 
         if not self._non_interactive:
             token_data = {
-                'client_id': self._client_id,
-                'grant_type': MSGENTRA_REFRESH_TOKEN_STRING,
-                'refresh_token': self._refresh_token,
-                'client_secret': self._client_secret,
-                'resource': MSGENTRA_RESOURCE_URL
+                "client_id": self._client_id,
+                "grant_type": MSGENTRA_REFRESH_TOKEN_STRING,
+                "refresh_token": self._refresh_token,
+                "client_secret": self._client_secret,
+                "resource": MSGENTRA_RESOURCE_URL,
             }
         else:
             token_data = {
-                'client_id': self._client_id,
-                'grant_type': MSGENTRA_CLIENT_CREDENTIALS_STRING,
-                'client_secret': self._client_secret,
-                'resource': MSGENTRA_RESOURCE_URL
+                "client_id": self._client_id,
+                "grant_type": MSGENTRA_CLIENT_CREDENTIALS_STRING,
+                "client_secret": self._client_secret,
+                "resource": MSGENTRA_RESOURCE_URL,
             }
 
         if not self._access_token:
@@ -583,13 +596,18 @@ class MsGraphForEntra_Connector(BaseConnector):
                 if phantom.is_fail(status):
                     return action_result.get_status(), None
 
-        headers.update({'Authorization': 'Bearer {0}'.format(self._access_token),
-                        'Accept': 'application/json',
-                        "User-Agent": MSGENTRA_USER_AGENT.format(product_version=self.get_app_json().get('app_version')),
-                        'Content-Type': 'application/json'})
+        headers.update(
+            {
+                "Authorization": "Bearer {0}".format(self._access_token),
+                "Accept": "application/json",
+                "User-Agent": MSGENTRA_USER_AGENT.format(product_version=self.get_app_json().get("app_version")),
+                "Content-Type": "application/json",
+            }
+        )
 
-        ret_val, resp_json = self._make_rest_call(action_result=action_result, endpoint=endpoint, headers=headers,
-                                                  params=params, data=data, method=method)
+        ret_val, resp_json = self._make_rest_call(
+            action_result=action_result, endpoint=endpoint, headers=headers, params=params, data=data, method=method
+        )
 
         # If token is expired, generate new token
         if MSGENTRA_TOKEN_EXPIRED in action_result.get_message():
@@ -601,10 +619,11 @@ class MsGraphForEntra_Connector(BaseConnector):
                 return action_result.get_status(), None
 
             action_result.set_status(phantom.APP_SUCCESS, "Token generated successfully")
-            headers.update({'Authorization': 'Bearer {0}'.format(self._access_token)})
+            headers.update({"Authorization": "Bearer {0}".format(self._access_token)})
 
-            ret_val, resp_json = self._make_rest_call(action_result=action_result, endpoint=endpoint, headers=headers,
-                                                      params=params, data=data, method=method)
+            ret_val, resp_json = self._make_rest_call(
+                action_result=action_result, endpoint=endpoint, headers=headers, params=params, data=data, method=method
+            )
 
         if phantom.is_fail(ret_val):
             return action_result.get_status(), None
@@ -612,7 +631,7 @@ class MsGraphForEntra_Connector(BaseConnector):
         return phantom.APP_SUCCESS, resp_json
 
     def _make_rest_call(self, endpoint, action_result, headers=None, params=None, data=None, method="get", verify=True):
-        """ Function that makes the REST call to the app.
+        """Function that makes the REST call to the app.
 
         :param endpoint: REST endpoint that needs to appended to the service address
         :param action_result: object of ActionResult class
@@ -629,9 +648,7 @@ class MsGraphForEntra_Connector(BaseConnector):
         if headers is None:
             headers = {}
 
-        headers.update({
-            "User-Agent": MSGENTRA_USER_AGENT.format(product_version=self.get_app_json().get('app_version'))
-        })
+        headers.update({"User-Agent": MSGENTRA_USER_AGENT.format(product_version=self.get_app_json().get("app_version"))})
         try:
             request_func = getattr(requests, method)
         except AttributeError:
@@ -643,15 +660,21 @@ class MsGraphForEntra_Connector(BaseConnector):
                 response = request_func(endpoint, data=data, headers=headers, verify=verify, params=params, timeout=self._timeout)
             except Exception as e:
                 self.debug_print("Exception Message - {}".format(str(e)))
-                return RetVal(action_result.set_status(phantom.APP_ERROR, "Error Connecting to server. Details: {0}"
-                                                    .format(self._get_error_message_from_exception(e))), resp_json)
+                return RetVal(
+                    action_result.set_status(
+                        phantom.APP_ERROR, "Error Connecting to server. Details: {0}".format(self._get_error_message_from_exception(e))
+                    ),
+                    resp_json,
+                )
 
-            if response.status_code == 429 and response.headers['Retry-After']:
-                retry_time = int(response.headers['Retry-After'])
+            if response.status_code == 429 and response.headers["Retry-After"]:
+                retry_time = int(response.headers["Retry-After"])
                 if retry_time > 300:  # throw error if wait time greater than 300 seconds
                     flag = False
-                    return RetVal(action_result.set_status(phantom.APP_ERROR, "Error occured : {}, {}"
-                                        .format(response.status_code, str(response.text))), resp_json)
+                    return RetVal(
+                        action_result.set_status(phantom.APP_ERROR, "Error occured : {}, {}".format(response.status_code, str(response.text))),
+                        resp_json,
+                    )
                 self.debug_print("Retrying after {} seconds".format(retry_time))
                 time.sleep(retry_time + 1)
             else:
@@ -660,7 +683,7 @@ class MsGraphForEntra_Connector(BaseConnector):
         return self._process_response(response, action_result)
 
     def _get_asset_name(self, action_result):
-        """ Get name of the asset using SOAR URL.
+        """Get name of the asset using SOAR URL.
 
         :param action_result: object of ActionResult class
         :return: status phantom.APP_ERROR/phantom.APP_SUCCESS(along with appropriate message), asset name
@@ -668,38 +691,37 @@ class MsGraphForEntra_Connector(BaseConnector):
 
         asset_id = self.get_asset_id()
         rest_endpoint = MSGENTRA_SOAR_ASSET_INFO_URL.format(asset_id=asset_id)
-        url = '{}{}'.format(MSGENTRA_SOAR_BASE_URL.format(soar_base_url=self.get_phantom_base_url()), rest_endpoint)
+        url = "{}{}".format(MSGENTRA_SOAR_BASE_URL.format(soar_base_url=self.get_phantom_base_url()), rest_endpoint)
         ret_val, resp_json = self._make_rest_call(action_result=action_result, endpoint=url, verify=False)
 
         if phantom.is_fail(ret_val):
             return ret_val, None
 
-        asset_name = resp_json.get('name')
+        asset_name = resp_json.get("name")
         if not asset_name:
-            return action_result.set_status(phantom.APP_ERROR, 'Asset Name for id: {0} not found.'.format(asset_id),
-                                            None)
+            return action_result.set_status(phantom.APP_ERROR, "Asset Name for id: {0} not found.".format(asset_id), None)
         return phantom.APP_SUCCESS, asset_name
 
     def _get_phantom_base_url_defender(self, action_result):
-        """ Get base url of phantom.
+        """Get base url of phantom.
 
         :param action_result: object of ActionResult class
         :return: status phantom.APP_ERROR/phantom.APP_SUCCESS(along with appropriate message),
         base url of phantom
         """
 
-        url = '{}{}'.format(MSGENTRA_SOAR_BASE_URL.format(soar_base_url=self.get_phantom_base_url()), MSGENTRA_SOAR_SYS_INFO_URL)
+        url = "{}{}".format(MSGENTRA_SOAR_BASE_URL.format(soar_base_url=self.get_phantom_base_url()), MSGENTRA_SOAR_SYS_INFO_URL)
         ret_val, resp_json = self._make_rest_call(action_result=action_result, endpoint=url, verify=False)
         if phantom.is_fail(ret_val):
             return ret_val, None
 
-        soar_base_url = resp_json.get('base_url').rstrip('/')
+        soar_base_url = resp_json.get("base_url").rstrip("/")
         if not soar_base_url:
             return action_result.set_status(phantom.APP_ERROR, MSGENTRA_BASE_URL_NOT_FOUND_MSG), None
         return phantom.APP_SUCCESS, soar_base_url
 
     def _get_app_rest_url(self, action_result):
-        """ Get URL for making rest calls.
+        """Get URL for making rest calls.
 
         :param action_result: object of ActionResult class
         :return: status phantom.APP_ERROR/phantom.APP_SUCCESS(along with appropriate message),
@@ -714,13 +736,12 @@ class MsGraphForEntra_Connector(BaseConnector):
         if phantom.is_fail(ret_val):
             return action_result.get_status(), None
 
-        self.save_progress('Using SOAR base URL as: {0}'.format(soar_base_url))
+        self.save_progress("Using SOAR base URL as: {0}".format(soar_base_url))
         app_json = self.get_app_json()
-        app_name = app_json['name']
+        app_name = app_json["name"]
 
         app_dir_name = _get_dir_name_from_app_name(app_name)
-        url_to_app_rest = '{0}/rest/handler/{1}_{2}/{3}'.format(soar_base_url, app_dir_name, app_json['appid'],
-                                                                asset_name)
+        url_to_app_rest = "{0}/rest/handler/{1}_{2}/{3}".format(soar_base_url, app_dir_name, app_json["appid"], asset_name)
         return phantom.APP_SUCCESS, url_to_app_rest
 
     def _get_private_key(self, action_result):
@@ -779,15 +800,15 @@ class MsGraphForEntra_Connector(BaseConnector):
             result = app.acquire_token_for_client(scopes=scope)
 
             self._state = self.load_state()
-            self._access_token = result['access_token']
-            self._state['access_token'] = result['access_token']
+            self._access_token = result["access_token"]
+            self._state["access_token"] = result["access_token"]
             # Save state
             self.save_state(self._state)
             self._state = self.load_state()
         return phantom.APP_SUCCESS
 
     def _generate_new_access_token(self, action_result, data):
-        """ This function is used to generate new access token using the code obtained on authorization.
+        """This function is used to generate new access token using the code obtained on authorization.
 
         :param action_result: object of ActionResult class
         :param data: Data to send in REST call
@@ -799,10 +820,9 @@ class MsGraphForEntra_Connector(BaseConnector):
             retval = self._generate_new_cba_access_token(action_result=action_result)
             return retval
 
-        req_url = '{}{}'.format(MSGENTRA_LOGIN_BASE_URL, MSGENTRA_SERVER_TOKEN_URL.format(tenant_id=quote(self._tenant)))
+        req_url = "{}{}".format(MSGENTRA_LOGIN_BASE_URL, MSGENTRA_SERVER_TOKEN_URL.format(tenant_id=quote(self._tenant)))
 
-        ret_val, resp_json = self._make_rest_call(action_result=action_result, endpoint=req_url,
-                                                  data=urlencode(data), method="post")
+        ret_val, resp_json = self._make_rest_call(action_result=action_result, endpoint=req_url, data=urlencode(data), method="post")
 
         if phantom.is_fail(ret_val):
             return action_result.get_status()
@@ -827,7 +847,7 @@ class MsGraphForEntra_Connector(BaseConnector):
         except Exception:
             return action_result.set_status(
                 phantom.APP_ERROR,
-                "Error occurred while parsing the state file. Please delete the state file and run the test connectivity again."
+                "Error occurred while parsing the state file. Please delete the state file and run the test connectivity again.",
             )
 
         self._state = self.load_state()
@@ -840,21 +860,25 @@ class MsGraphForEntra_Connector(BaseConnector):
         # to state file after successful generation of new token are same or not.
 
         if self._access_token != self._state.get(MSGENTRA_ACCESS_TOKEN_STRING):
-            message = "Error occurred while saving the newly generated access token (in place of the expired token) in the state file."\
-                      " Please check the owner, owner group, and the permissions of the state file. The SOAR user should have "\
-                      "the correct access rights and ownership for the corresponding state file (refer to readme file for more information)"
+            message = (
+                "Error occurred while saving the newly generated access token (in place of the expired token) in the state file."
+                " Please check the owner, owner group, and the permissions of the state file. The SOAR user should have "
+                "the correct access rights and ownership for the corresponding state file (refer to readme file for more information)"
+            )
             return action_result.set_status(phantom.APP_ERROR, message)
 
         if not self._non_interactive and self._refresh_token and self._refresh_token != self._state.get(MSGENTRA_REFRESH_TOKEN_STRING):
-            message = "Error occurred while saving the newly generated refresh token in the state file."\
-                " Please check the owner, owner group, and the permissions of the state file. The SOAR user should have "\
+            message = (
+                "Error occurred while saving the newly generated refresh token in the state file."
+                " Please check the owner, owner group, and the permissions of the state file. The SOAR user should have "
                 "the correct access rights and ownership for the corresponding state file (refer to readme file for more information)"
+            )
             return action_result.set_status(phantom.APP_ERROR, message)
 
         return phantom.APP_SUCCESS
 
     def _wait(self, action_result):
-        """ This function is used to hold the action till user login for 105 seconds.
+        """This function is used to hold the action till user login for 105 seconds.
 
         :param action_result: Object of ActionResult class
         :return: status (success/failed)
@@ -862,12 +886,12 @@ class MsGraphForEntra_Connector(BaseConnector):
 
         app_dir = os.path.dirname(os.path.abspath(__file__))
         # file to check whether the request has been granted or not
-        auth_status_file_path = '{0}/{1}_{2}'.format(app_dir, self.get_asset_id(), MSGENTRA_TC_FILE)
+        auth_status_file_path = "{0}/{1}_{2}".format(app_dir, self.get_asset_id(), MSGENTRA_TC_FILE)
         time_out = False
 
         # wait-time while request is being granted for 105 seconds
         for _ in range(MSGENTRA_TC_STATUS_WAIT_TIME // MSGENTRA_TC_STATUS_SLEEP):
-            self.send_progress('Waiting...')
+            self.send_progress("Waiting...")
             if os.path.isfile(auth_status_file_path):
                 time_out = True
                 os.unlink(auth_status_file_path)
@@ -875,9 +899,9 @@ class MsGraphForEntra_Connector(BaseConnector):
             time.sleep(MSGENTRA_TC_STATUS_SLEEP)
 
         if not time_out:
-            self.send_progress('')
+            self.send_progress("")
             return action_result.set_status(phantom.APP_ERROR, "Timeout. Please try again later")
-        self.send_progress('Authenticated')
+        self.send_progress("Authenticated")
         return phantom.APP_SUCCESS
 
     def _remove_tokens(self, action_result):
@@ -890,7 +914,7 @@ class MsGraphForEntra_Connector(BaseConnector):
                 self._state.pop(MSGENTRA_CODE_STRING)
 
     def _handle_test_connectivity(self, param):
-        """ Testing of given credentials and obtaining authorization for all other actions.
+        """Testing of given credentials and obtaining authorization for all other actions.
 
         :param param: Dictionary of input parameters
         :return: status(phantom.APP_SUCCESS/phantom.APP_ERROR)
@@ -911,22 +935,27 @@ class MsGraphForEntra_Connector(BaseConnector):
                 return action_result.get_status()
 
             # Append /result to create redirect_uri
-            redirect_uri = '{0}/result'.format(app_rest_url)
-            self._state['redirect_uri'] = redirect_uri
+            redirect_uri = "{0}/result".format(app_rest_url)
+            self._state["redirect_uri"] = redirect_uri
 
             self.save_progress(MSGENTRA_OAUTH_URL_MSG)
             self.save_progress(redirect_uri)
 
             # Authorization URL used to make request for getting code which is used to generate access token
-            authorization_url = MSGENTRA_AUTHORIZE_URL.format(tenant_id=quote(self._tenant), client_id=quote(self._client_id),
-                                                                redirect_uri=redirect_uri, state=self.get_asset_id(),
-                                                                response_type=MSGENTRA_CODE_STRING, resource=MSGENTRA_RESOURCE_URL)
-            authorization_url = '{}{}'.format(MSGENTRA_LOGIN_BASE_URL, authorization_url)
+            authorization_url = MSGENTRA_AUTHORIZE_URL.format(
+                tenant_id=quote(self._tenant),
+                client_id=quote(self._client_id),
+                redirect_uri=redirect_uri,
+                state=self.get_asset_id(),
+                response_type=MSGENTRA_CODE_STRING,
+                resource=MSGENTRA_RESOURCE_URL,
+            )
+            authorization_url = "{}{}".format(MSGENTRA_LOGIN_BASE_URL, authorization_url)
 
-            self._state['authorization_url'] = authorization_url
+            self._state["authorization_url"] = authorization_url
 
             # URL which would be shown to the user
-            url_for_authorize_request = '{0}/start_oauth?asset_id={1}&'.format(app_rest_url, self.get_asset_id())
+            url_for_authorize_request = "{0}/start_oauth?asset_id={1}&".format(app_rest_url, self.get_asset_id())
             _save_app_state(self._state, self.get_asset_id(), self)
 
             self.save_progress(MSGENTRA_AUTHORIZE_USER_MSG)
@@ -939,7 +968,7 @@ class MsGraphForEntra_Connector(BaseConnector):
             status = self._wait(action_result=action_result)
 
             # Empty message to override last message of waiting
-            self.send_progress('')
+            self.send_progress("")
             if phantom.is_fail(status):
                 self._remove_tokens(action_result)
                 self.save_progress(MSGENTRA_TEST_CONNECTIVITY_FAILED_MSG)
@@ -959,39 +988,37 @@ class MsGraphForEntra_Connector(BaseConnector):
 
         if not self._non_interactive:
             data = {
-                'client_id': self._client_id,
-                'grant_type': 'authorization_code',
-                'redirect_uri': redirect_uri,
+                "client_id": self._client_id,
+                "grant_type": "authorization_code",
+                "redirect_uri": redirect_uri,
                 MSGENTRA_CODE_STRING: current_code,
-                'resource': MSGENTRA_RESOURCE_URL,
-                'client_secret': self._client_secret
+                "resource": MSGENTRA_RESOURCE_URL,
+                "client_secret": self._client_secret,
             }
         else:
             data = {
-                'client_id': self._client_id,
-                'grant_type': MSGENTRA_CLIENT_CREDENTIALS_STRING,
-                'client_secret': self._client_secret,
-                'resource': MSGENTRA_RESOURCE_URL
+                "client_id": self._client_id,
+                "grant_type": MSGENTRA_CLIENT_CREDENTIALS_STRING,
+                "client_secret": self._client_secret,
+                "resource": MSGENTRA_RESOURCE_URL,
             }
         # For first time access, new access token is generated
         ret_val = self._generate_new_access_token(action_result=action_result, data=data)
 
         if phantom.is_fail(ret_val):
-            self.send_progress('')
+            self.send_progress("")
             self._remove_tokens(action_result)
             self.save_progress(MSGENTRA_TEST_CONNECTIVITY_FAILED_MSG)
             return action_result.get_status()
 
         self.save_progress(MSGENTRA_ALERTS_INFO_MSG)
 
-        url = '{}{}'.format(MSGENTRA_MSGRAPH_API_BASE_URL, MSGENTRA_LIST_RISK_EVENTS_ENDPOINT)
-        params = {
-            '$top': 1  # page size of the result set
-        }
+        url = "{}{}".format(MSGENTRA_MSGRAPH_API_BASE_URL, MSGENTRA_LIST_RISK_EVENTS_ENDPOINT)
+        params = {"$top": 1}  # page size of the result set
 
         ret_val, _ = self._update_request(action_result=action_result, endpoint=url, params=params)
         if phantom.is_fail(ret_val):
-            self.send_progress('')
+            self.send_progress("")
             self._remove_tokens(action_result)
             self.save_progress(MSGENTRA_TEST_CONNECTIVITY_FAILED_MSG)
             return action_result.get_status()
@@ -1012,16 +1039,16 @@ class MsGraphForEntra_Connector(BaseConnector):
         """
 
         resource_list = []
-        next_page_token = ''
+        next_page_token = ""
 
         while True:
             params = {}
             if not next_page_token and filter:
-                params['$filter'] = filter
+                params["$filter"] = filter
             if not next_page_token and page_size:
-                params['$top'] = page_size
+                params["$top"] = page_size
             if not next_page_token and orderby:
-                params['$orderby'] = orderby
+                params["$orderby"] = orderby
             if next_page_token:
                 endpoint = next_page_token
 
@@ -1034,13 +1061,12 @@ class MsGraphForEntra_Connector(BaseConnector):
             if not response:
                 return action_result.set_status(phantom.APP_ERROR, MSGENTRA_UNEXPECTED_RESPONSE_ERROR)
             try:
-                for ele in response['value']:
+                for ele in response["value"]:
                     resource_list.append(ele)
             except Exception as e:
                 error_message = self._get_error_message_from_exception(e)
                 self.debug_print("{}: {}".format(MSGENTRA_UNEXPECTED_RESPONSE_ERROR, error_message))
-                return action_result.set_status(phantom.APP_ERROR, "Error occurred while fetching data. Details: {0}"
-                                                   .format(error_message))
+                return action_result.set_status(phantom.APP_ERROR, "Error occurred while fetching data. Details: {0}".format(error_message))
             if not response.get(MSGENTRA_NEXT_PAGE_TOKEN):
                 break
 
@@ -1052,7 +1078,7 @@ class MsGraphForEntra_Connector(BaseConnector):
         return resource_list[:limit]
 
     def _handle_list_risk_detections(self, param):
-        """ This function is used to handle the list risk events action.
+        """This function is used to handle the list risk events action.
 
         :param param: Dictionary of input parameters
         :return: status(phantom.APP_SUCCESS/phantom.APP_ERROR)
@@ -1082,12 +1108,12 @@ class MsGraphForEntra_Connector(BaseConnector):
             action_result.add_data(risk_detection)
 
         summary = action_result.update_summary({})
-        summary['total_risk_detections'] = len(risk_detection_list)
+        summary["total_risk_detections"] = len(risk_detection_list)
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_list_risky_users(self, param):
-        """ This function is used to handle the list risky users action.
+        """This function is used to handle the list risky users action.
 
         :param param: Dictionary of input parameters
         :return: status(phantom.APP_SUCCESS/phantom.APP_ERROR)
@@ -1116,12 +1142,12 @@ class MsGraphForEntra_Connector(BaseConnector):
             action_result.add_data(risky_user)
 
         summary = action_result.update_summary({})
-        summary['total_risky_users'] = len(risky_users_list)
+        summary["total_risky_users"] = len(risky_users_list)
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_list_signins(self, param):
-        """ This function is used to handle the list signins action.
+        """This function is used to handle the list signins action.
 
         :param param: Dictionary of input parameters
         :return: status(phantom.APP_SUCCESS/phantom.APP_ERROR)
@@ -1150,12 +1176,12 @@ class MsGraphForEntra_Connector(BaseConnector):
             action_result.add_data(signin)
 
         summary = action_result.update_summary({})
-        summary['total_signins'] = len(signins)
+        summary["total_signins"] = len(signins)
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_list_devices(self, param):
-        """ This function is used to handle the list devices action.
+        """This function is used to handle the list devices action.
 
         :param param: Dictionary of input parameters
         :return: status(phantom.APP_SUCCESS/phantom.APP_ERROR)
@@ -1184,12 +1210,12 @@ class MsGraphForEntra_Connector(BaseConnector):
             action_result.add_data(device)
 
         summary = action_result.update_summary({})
-        summary['total_devices'] = len(devices)
+        summary["total_devices"] = len(devices)
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_dismiss_users_risk(self, param):
-        """ This function is used to handle the dismiss users risk action.
+        """This function is used to handle the dismiss users risk action.
 
         :param param: Dictionary of input parameters
         :return: status(phantom.APP_SUCCESS/phantom.APP_ERROR)
@@ -1198,18 +1224,18 @@ class MsGraphForEntra_Connector(BaseConnector):
         self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        userids = param.get('userids')
+        userids = param.get("userids")
         # userids can be a string or a list, convert everything to a list
         try:
             userid_list = ast.literal_eval(userids)
         except (ValueError, SyntaxError):
-            userid_list = userids.split(',')
+            userid_list = userids.split(",")
             userid_list = [x.strip() for x in userid_list]
 
         body_json = f'{{ "userids": {json.dumps(userid_list)} }}'
 
         endpoint = "{0}{1}".format(MSGENTRA_MSGRAPH_API_BASE_URL, MSGENTRA_DISMISS_RISKY_USERS_ENDPOINT)
-        ret_val, response = self._update_request(endpoint=endpoint, action_result=action_result, params=None, method='post', data=body_json)
+        ret_val, response = self._update_request(endpoint=endpoint, action_result=action_result, params=None, method="post", data=body_json)
 
         if phantom.is_fail(ret_val):
             return action_result.get_status()
@@ -1255,13 +1281,13 @@ class MsGraphForEntra_Connector(BaseConnector):
         start_time_scheduled_poll = config.get(MSGENTRA_CONFIG_START_TIME_SCHEDULED_POLL)
         filter_risk_detections = config.get(MSGENTRA_CONFIG_FILTER_RISK_DETECTIONS_SCHEDULED_POLL)
         filter_risky_users = config.get(MSGENTRA_CONFIG_FILTER_RISKY_USERS_SCHEDULED_POLL)
-        risk_detections_last_modified_time = (
-            datetime.now() - timedelta(days=MSGENTRA_DEFAULT_LOOKBACK_DAYS)
-        ).strftime(MSGENTRA_APP_DT_STR_FORMAT)  # Let's fall back to the last 7 days
+        risk_detections_last_modified_time = (datetime.now() - timedelta(days=MSGENTRA_DEFAULT_LOOKBACK_DAYS)).strftime(
+            MSGENTRA_APP_DT_STR_FORMAT
+        )  # Let's fall back to the last 7 days
 
-        risky_users_last_modified_time = (
-            datetime.now() - timedelta(days=MSGENTRA_DEFAULT_LOOKBACK_DAYS)
-        ).strftime(MSGENTRA_APP_DT_STR_FORMAT)  # Let's fall back to the last 7 days
+        risky_users_last_modified_time = (datetime.now() - timedelta(days=MSGENTRA_DEFAULT_LOOKBACK_DAYS)).strftime(
+            MSGENTRA_APP_DT_STR_FORMAT
+        )  # Let's fall back to the last 7 days
 
         if start_time_scheduled_poll:
             ret_val = self._check_date_format(action_result, start_time_scheduled_poll)
@@ -1277,8 +1303,7 @@ class MsGraphForEntra_Connector(BaseConnector):
         if self.is_poll_now():
             max_ingestions = int(param.get(phantom.APP_JSON_CONTAINER_COUNT))
         else:
-            max_ingestions = config.get(MSGENTRA_CONFIG_MAX_INGESTION,
-                                       MSGENTRA_INGESTION_DEFAULT_LIMIT)
+            max_ingestions = config.get(MSGENTRA_CONFIG_MAX_INGESTION, MSGENTRA_INGESTION_DEFAULT_LIMIT)
             ret_val, max_ingestions = self._validate_integer(action_result, max_ingestions, "max_ingestions")
 
             if phantom.is_fail(ret_val):
@@ -1297,8 +1322,11 @@ class MsGraphForEntra_Connector(BaseConnector):
 
         # Start of risk detection ingestion
         risk_detections_start_time_filter = f"{MSGENTRA_RISK_DETECTION_JSON_LAST_MODIFIED} ge {risk_detections_last_modified_time}"
-        poll_filter = risk_detections_start_time_filter if not filter_risk_detections \
+        poll_filter = (
+            risk_detections_start_time_filter
+            if not filter_risk_detections
             else f"{filter_risk_detections} and {risk_detections_start_time_filter}"
+        )
 
         orderby = MSGENTRA_RISK_DETECTIONS_ORDER_BY
 
@@ -1318,20 +1346,22 @@ class MsGraphForEntra_Connector(BaseConnector):
         for risk_detection in risk_detections_list:
             # Create artifact from the incident and alerts
             artifacts = []
-            artifacts.append(self._create_artifacts(risk_detection, eventType='riskDetection'))
+            artifacts.append(self._create_artifacts(risk_detection, eventType="riskDetection"))
 
             # Ingest artifacts for incidents and alerts
             try:
                 self._ingest_artifacts_new(
-                    artifacts, name=f'Risk Detection: {risk_detection["riskEventType"]}', key=risk_detection["id"], eventType='riskyDetection'
+                    artifacts, name=f'Risk Detection: {risk_detection["riskEventType"]}', key=risk_detection["id"], eventType="riskyDetection"
                 )
             except Exception as e:
                 self.debug_print("Error occurred while saving artifacts for risk detections. Error: {}".format(str(e)))
 
         if risk_detections_list:
             if MSGENTRA_RISK_DETECTION_JSON_LAST_MODIFIED not in risk_detections_list[-1]:
-                return action_result.set_status(phantom.APP_ERROR, "Could not extract {} from latest ingested "
-                                                                    "risk detection.".format(MSGENTRA_RISK_DETECTION_JSON_LAST_MODIFIED))
+                return action_result.set_status(
+                    phantom.APP_ERROR,
+                    "Could not extract {} from latest ingested " "risk detection.".format(MSGENTRA_RISK_DETECTION_JSON_LAST_MODIFIED),
+                )
             self._state[STATE_RISK_DETECTIONS_LAST_TIME] = risk_detections_list[-1].get(MSGENTRA_RISK_DETECTION_JSON_LAST_MODIFIED)
             self.save_state(self._state)
 
@@ -1355,20 +1385,21 @@ class MsGraphForEntra_Connector(BaseConnector):
         for risky_user in risky_users_list:
             # Create artifact from the incident and alerts
             artifacts = []
-            artifacts.append(self._create_artifacts(risky_user, eventType='riskyUser'))
+            artifacts.append(self._create_artifacts(risky_user, eventType="riskyUser"))
 
             # Ingest artifacts for incidents and alerts
             try:
                 self._ingest_artifacts_new(
-                    artifacts, name=f'Risky User: {risky_user["userDisplayName"]}', key=risky_user["id"], eventType='riskyUser'
+                    artifacts, name=f'Risky User: {risky_user["userDisplayName"]}', key=risky_user["id"], eventType="riskyUser"
                 )
             except Exception as e:
                 self.debug_print("Error occurred while saving artifacts for riskyUsers. Error: {}".format(str(e)))
 
         if risky_users_list:
             if MSGENTRA_RISKY_USERS_JSON_LAST_MODIFIED not in risky_users_list[-1]:
-                return action_result.set_status(phantom.APP_ERROR, "Could not extract {} from latest ingested "
-                                                                    "risky user.".format(MSGENTRA_RISKY_USERS_JSON_LAST_MODIFIED))
+                return action_result.set_status(
+                    phantom.APP_ERROR, "Could not extract {} from latest ingested " "risky user.".format(MSGENTRA_RISKY_USERS_JSON_LAST_MODIFIED)
+                )
             self._state[STATE_RISKY_USERS_LAST_TIME] = risky_users_list[-1].get(MSGENTRA_RISKY_USERS_JSON_LAST_MODIFIED)
             self.save_state(self._state)
 
@@ -1383,11 +1414,7 @@ class MsGraphForEntra_Connector(BaseConnector):
         Returns:
             :return: status(phantom.APP_SUCCESS/phantom.APP_ERROR), message, cid(container_id)
         """
-        container = {
-            "name": name,
-            "description": f'{eventType} ingested using MS Entra API',
-            "source_data_identifier": key
-        }
+        container = {"name": name, "description": f"{eventType} ingested using MS Entra API", "source_data_identifier": key}
 
         ret_val, message, cid = self.save_container(container)
         if phantom.is_fail(ret_val):
@@ -1399,51 +1426,42 @@ class MsGraphForEntra_Connector(BaseConnector):
             self.debug_print("Duplicate container count: {}".format(self.duplicate_container))
 
         for artifact in artifacts:
-            artifact['container_id'] = cid
+            artifact["container_id"] = cid
         ret_val, message, _ = self.save_artifacts(artifacts)
 
     @staticmethod
     def _create_alert_artifacts(alert):
 
-        return {
-            'label': 'alert',
-            'name': alert.get('title'),
-            'source_data_identifier': alert.get('id'),
-            'data': alert, 'cef': alert
-        }
+        return {"label": "alert", "name": alert.get("title"), "source_data_identifier": alert.get("id"), "data": alert, "cef": alert}
 
     @staticmethod
     def _create_artifacts(event, eventType):
         def flatten_data(y):
             out = {}
 
-            def flatten(x, name=''):
+            def flatten(x, name=""):
                 if type(x) is dict:
                     for a in x:
-                        flatten(x[a], name + a + '_')
+                        flatten(x[a], name + a + "_")
                 elif type(x) is list:
                     i = 0
                     for a in x:
-                        flatten(a, name + str(i) + '_')
+                        flatten(a, name + str(i) + "_")
                         i += 1
                 else:
                     out[name[:-1]] = x
 
             flatten(y)
             return out
-        if eventType == 'riskDetection':
-            label = 'risk detection'
-            name = event['riskEventType']
-        elif eventType == 'riskyUser':
-            label = 'risky user'
-            name = event['userDisplayName']
 
-        return {
-            'label': label,
-            'name': name,
-            'source_data_identifier': event.get('id'),
-            'data': flatten_data(event), 'cef': flatten_data(event)
-        }
+        if eventType == "riskDetection":
+            label = "risk detection"
+            name = event["riskEventType"]
+        elif eventType == "riskyUser":
+            label = "risky user"
+            name = event["userDisplayName"]
+
+        return {"label": label, "name": name, "source_data_identifier": event.get("id"), "data": flatten_data(event), "cef": flatten_data(event)}
 
     def handle_action(self, param):
         ret_val = phantom.APP_SUCCESS
@@ -1453,19 +1471,19 @@ class MsGraphForEntra_Connector(BaseConnector):
 
         self.debug_print("action_id", self.get_action_identifier())
 
-        if action_id == 'test_connectivity':
+        if action_id == "test_connectivity":
             ret_val = self._handle_test_connectivity(param)
-        elif action_id == 'list_risk_detections':
+        elif action_id == "list_risk_detections":
             ret_val = self._handle_list_risk_detections(param)
-        elif action_id == 'list_risky_users':
+        elif action_id == "list_risky_users":
             ret_val = self._handle_list_risky_users(param)
-        elif action_id == 'list_signins':
+        elif action_id == "list_signins":
             ret_val = self._handle_list_signins(param)
-        elif action_id == 'dismiss_users_risk':
+        elif action_id == "dismiss_users_risk":
             ret_val = self._handle_dismiss_users_risk(param)
-        elif action_id == 'list_devices':
+        elif action_id == "list_devices":
             ret_val = self._handle_list_devices(param)
-        elif action_id == 'on_poll':
+        elif action_id == "on_poll":
             ret_val = self._handle_on_poll(param)
 
         return ret_val
@@ -1483,7 +1501,7 @@ class MsGraphForEntra_Connector(BaseConnector):
         action_id = self.get_action_identifier()
         action_result = ActionResult()
         self._asset_id = self.get_asset_id()
-        self._non_interactive = config.get('non_interactive', False)
+        self._non_interactive = config.get("non_interactive", False)
         self._tenant = config[MSGENTRA_CONFIG_TENANT_ID]
         self._client_id = config[MSGENTRA_CONFIG_CLIENT_ID]
         self._client_secret = config.get(MSGENTRA_CONFIG_CLIENT_SECRET)
@@ -1514,21 +1532,19 @@ class MsGraphForEntra_Connector(BaseConnector):
 
         if not isinstance(self._state, dict):
             self.debug_print("Resetting the state file with the default format")
-            self._state = {
-                "app_version": self.get_app_json().get('app_version')
-            }
+            self._state = {"app_version": self.get_app_json().get("app_version")}
             if not self._non_interactive:
                 return self.set_status(phantom.APP_ERROR, MSGENTRA_STATE_FILE_CORRUPT_ERROR)
 
         self._access_token = self._state.get(MSGENTRA_ACCESS_TOKEN_STRING, None)
         self._refresh_token = self._state.get(MSGENTRA_REFRESH_TOKEN_STRING, None)
-        if not self._non_interactive and action_id != 'test_connectivity' and (not self._access_token or not self._refresh_token):
+        if not self._non_interactive and action_id != "test_connectivity" and (not self._access_token or not self._refresh_token):
             token_data = {
-                'client_id': self._client_id,
-                'grant_type': MSGENTRA_REFRESH_TOKEN_STRING,
-                'refresh_token': self._refresh_token,
-                'client_secret': self._client_secret,
-                'resource': MSGENTRA_RESOURCE_URL
+                "client_id": self._client_id,
+                "grant_type": MSGENTRA_REFRESH_TOKEN_STRING,
+                "refresh_token": self._refresh_token,
+                "client_secret": self._client_secret,
+                "resource": MSGENTRA_RESOURCE_URL,
             }
             ret_val = self._generate_new_access_token(action_result=action_result, data=token_data)
 
@@ -1550,10 +1566,10 @@ def main():
 
     argparser = argparse.ArgumentParser()
 
-    argparser.add_argument('input_test_json', help='Input Test JSON file')
-    argparser.add_argument('-u', '--username', help='username', required=False)
-    argparser.add_argument('-p', '--password', help='password', required=False)
-    argparser.add_argument('-v', '--verify', action='store_true', help='verify', required=False, default=False)
+    argparser.add_argument("input_test_json", help="Input Test JSON file")
+    argparser.add_argument("-u", "--username", help="username", required=False)
+    argparser.add_argument("-p", "--password", help="password", required=False)
+    argparser.add_argument("-v", "--verify", action="store_true", help="verify", required=False, default=False)
 
     args = argparser.parse_args()
     session_id = None
@@ -1566,6 +1582,7 @@ def main():
 
         # User specified a username but not a password, so ask
         import getpass
+
         password = getpass.getpass("Password: ")
 
     if username and password:
@@ -1574,20 +1591,20 @@ def main():
 
             print("Accessing the Login page")
             r = requests.get(login_url, verify=verify, timeout=DEFAULT_TIMEOUT)
-            csrftoken = r.cookies['csrftoken']
+            csrftoken = r.cookies["csrftoken"]
 
             data = dict()
-            data['username'] = username
-            data['password'] = password
-            data['csrfmiddlewaretoken'] = csrftoken
+            data["username"] = username
+            data["password"] = password
+            data["csrfmiddlewaretoken"] = csrftoken
 
             headers = dict()
-            headers['Cookie'] = 'csrftoken={}'.format(csrftoken)
-            headers['Referer'] = login_url
+            headers["Cookie"] = "csrftoken={}".format(csrftoken)
+            headers["Referer"] = login_url
 
             print("Logging into Platform to get the session id")
             r2 = requests.post(login_url, verify=verify, data=data, headers=headers, timeout=DEFAULT_TIMEOUT)
-            session_id = r2.cookies['sessionid']
+            session_id = r2.cookies["sessionid"]
         except Exception as e:
             print("Unable to get session id from the platform. Error: {0}".format(str(e)))
             sys.exit(1)
@@ -1601,8 +1618,8 @@ def main():
         connector.print_progress_message = True
 
         if session_id is not None:
-            in_json['user_session_token'] = session_id
-            connector._set_csrf_info(csrftoken, headers['Referer'])
+            in_json["user_session_token"] = session_id
+            connector._set_csrf_info(csrftoken, headers["Referer"])
 
         ret_val = connector._handle_action(json.dumps(in_json), None)
         print(json.dumps(json.loads(ret_val), indent=4))
@@ -1610,5 +1627,5 @@ def main():
     sys.exit(0)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
