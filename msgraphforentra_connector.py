@@ -1318,20 +1318,20 @@ class MsGraphForEntra_Connector(BaseConnector):
                     risky_users_last_modified_time = last_time_risky_users
 
         # Start of risk detection ingestion
-        risk_detections_start_time_filter = f"{MSGENTRA_RISK_DETECTION_JSON_LAST_MODIFIED} ge {risk_detections_last_modified_time}"
+        risk_detections_start_time_filter = f"{consts.MSGENTRA_RISK_DETECTION_JSON_LAST_MODIFIED} ge {risk_detections_last_modified_time}"
         poll_filter = (
             risk_detections_start_time_filter
             if not filter_risk_detections
             else f"{filter_risk_detections} and {risk_detections_start_time_filter}"
         )
 
-        orderby = MSGENTRA_RISK_DETECTIONS_ORDER_BY
+        orderby = consts.MSGENTRA_RISK_DETECTIONS_ORDER_BY
 
-        endpoint = "{0}{1}".format(MSGENTRA_MSGRAPH_API_BASE_URL, MSGENTRA_LIST_RISK_EVENTS_ENDPOINT)
+        endpoint = "{0}{1}".format(consts.MSGENTRA_MSGRAPH_API_BASE_URL, consts.MSGENTRA_LIST_RISK_EVENTS_ENDPOINT)
         self.duplicate_container = 0
 
         risk_detections_list = self._paginator(
-            action_result, max_ingestions, MSGENTRA_INGESTION_DEFAULT_PAGE_SIZE, endpoint, poll_filter, orderby
+            action_result, max_ingestions, consts.MSGENTRA_INGESTION_DEFAULT_PAGE_SIZE, endpoint, poll_filter, orderby
         )
         if not risk_detections_list and not isinstance(risk_detections_list, list):  # Failed to fetch risk detections, regardless of the reason
             self.save_progress("Failed to retrieve risk detections")
