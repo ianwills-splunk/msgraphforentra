@@ -817,27 +817,27 @@ class MsGraphForEntra_Connector(BaseConnector):
             retval = self._generate_new_cba_access_token(action_result=action_result)
             return retval
 
-        req_url = "{}{}".format(MSGENTRA_LOGIN_BASE_URL, MSGENTRA_SERVER_TOKEN_URL.format(tenant_id=quote(self._tenant)))
+        req_url = "{}{}".format(consts.MSGENTRA_LOGIN_BASE_URL, consts.MSGENTRA_SERVER_TOKEN_URL.format(tenant_id=quote(self._tenant)))
 
         ret_val, resp_json = self._make_rest_call(action_result=action_result, endpoint=req_url, data=urlencode(data), method="post")
 
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
-        if resp_json.get(MSGENTRA_ID_TOKEN_STRING):
-            resp_json.pop(MSGENTRA_ID_TOKEN_STRING)
+        if resp_json.get(consts.MSGENTRA_ID_TOKEN_STRING):
+            resp_json.pop(consts.MSGENTRA_ID_TOKEN_STRING)
 
         try:
-            self._access_token = resp_json[MSGENTRA_ACCESS_TOKEN_STRING]
-            if MSGENTRA_REFRESH_TOKEN_STRING in resp_json:
-                self._refresh_token = resp_json[MSGENTRA_REFRESH_TOKEN_STRING]
+            self._access_token = resp_json[consts.MSGENTRA_ACCESS_TOKEN_STRING]
+            if consts.MSGENTRA_REFRESH_TOKEN_STRING in resp_json:
+                self._refresh_token = resp_json[consts.MSGENTRA_REFRESH_TOKEN_STRING]
         except Exception as e:
             err = self._get_error_message_from_exception(e)
             return action_result.set_status(phantom.APP_ERROR, "Error occurred while generating access token {}".format(err))
 
-        self._state[MSGENTRA_ACCESS_TOKEN_STRING] = self._access_token
-        self._state[MSGENTRA_REFRESH_TOKEN_STRING] = self._refresh_token
-        self._state[MSGENTRA_STATE_IS_ENCRYPTED] = True
+        self._state[consts.MSGENTRA_ACCESS_TOKEN_STRING] = self._access_token
+        self._state[consts.MSGENTRA_REFRESH_TOKEN_STRING] = self._refresh_token
+        self._state[consts.MSGENTRA_STATE_IS_ENCRYPTED] = True
 
         try:
             self.save_state(self._state)
