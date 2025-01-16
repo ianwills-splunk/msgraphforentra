@@ -1313,10 +1313,10 @@ class MsGraphForEntra_Connector(BaseConnector):
                 self._state[STATE_FIRST_RUN] = False
             else:
                 # Risk detections
-                last_time_risk_detections = self._state.get(STATE_RISK_DETECTIONS_LAST_TIME)
+                last_time_risk_detections = self._state.get(consts.STATE_RISK_DETECTIONS_LAST_TIME)
                 if last_time_risk_detections:
                     risk_detections_last_modified_time = last_time_risk_detections
-                last_time_risky_users = self._state.get(STATE_RISKY_USERS_LAST_TIME)
+                last_time_risky_users = self._state.get(consts.STATE_RISKY_USERS_LAST_TIME)
                 if last_time_risky_users:
                     risky_users_last_modified_time = last_time_risky_users
 
