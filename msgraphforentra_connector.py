@@ -274,7 +274,7 @@ class MsGraphForEntra_Connector(BaseConnector):
     def __init__(self):
 
         # Call the BaseConnectors init first
-        super(MsGraphForEntra_Connector, self).__init__()
+        super().__init__()
         self._state = None
         self._tenant = None
         self._client_id = None
