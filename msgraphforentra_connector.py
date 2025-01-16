@@ -687,8 +687,8 @@ class MsGraphForEntra_Connector(BaseConnector):
         """
 
         asset_id = self.get_asset_id()
-        rest_endpoint = MSGENTRA_SOAR_ASSET_INFO_URL.format(asset_id=asset_id)
-        url = "{}{}".format(MSGENTRA_SOAR_BASE_URL.format(soar_base_url=self.get_phantom_base_url()), rest_endpoint)
+        rest_endpoint = consts.MSGENTRA_SOAR_ASSET_INFO_URL.format(asset_id=asset_id)
+        url = f"{consts.MSGENTRA_SOAR_BASE_URL.format(soar_base_url=self.get_phantom_base_url())}{rest_endpoint}"
         ret_val, resp_json = self._make_rest_call(action_result=action_result, endpoint=url, verify=False)
 
         if phantom.is_fail(ret_val):
