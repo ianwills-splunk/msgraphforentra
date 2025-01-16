@@ -1393,11 +1393,11 @@ class MsGraphForEntra_Connector(BaseConnector):
                 self.debug_print("Error occurred while saving artifacts for riskyUsers. Error: {}".format(str(e)))
 
         if risky_users_list:
-            if MSGENTRA_RISKY_USERS_JSON_LAST_MODIFIED not in risky_users_list[-1]:
+            if consts.MSGENTRA_RISKY_USERS_JSON_LAST_MODIFIED not in risky_users_list[-1]:
                 return action_result.set_status(
-                    phantom.APP_ERROR, "Could not extract {} from latest ingested " "risky user.".format(MSGENTRA_RISKY_USERS_JSON_LAST_MODIFIED)
+                    phantom.APP_ERROR, "Could not extract {} from latest ingested " "risky user.".format(consts.MSGENTRA_RISKY_USERS_JSON_LAST_MODIFIED)
                 )
-            self._state[STATE_RISKY_USERS_LAST_TIME] = risky_users_list[-1].get(MSGENTRA_RISKY_USERS_JSON_LAST_MODIFIED)
+            self._state[consts.STATE_RISKY_USERS_LAST_TIME] = risky_users_list[-1].get(consts.MSGENTRA_RISKY_USERS_JSON_LAST_MODIFIED)
             self.save_state(self._state)
 
         return action_result.set_status(phantom.APP_SUCCESS)
