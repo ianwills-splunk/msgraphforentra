@@ -1521,9 +1521,9 @@ class MsGraphForEntra_Connector(BaseConnector):
             self._cba_auth = True
             # Check non-interactive is enabled for CBA auth
             if self._non_interactive is False:
-                return self.set_status(phantom.APP_ERROR, MSGENTRA_CBA_INTERACTIVE_ERROR)
+                return self.set_status(phantom.APP_ERROR, consts.MSGENTRA_CBA_INTERACTIVE_ERROR)
 
-        ret_val, self._timeout = self._validate_integer(action_result, self._timeout, MSGENTRA_TIMEOUT_KEY)
+        ret_val, self._timeout = self._validate_integer(action_result, self._timeout, consts.MSGENTRA_TIMEOUT_KEY)
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
