@@ -1499,21 +1499,21 @@ class MsGraphForEntra_Connector(BaseConnector):
         action_result = ActionResult()
         self._asset_id = self.get_asset_id()
         self._non_interactive = config.get("non_interactive", False)
-        self._tenant = config[MSGENTRA_CONFIG_TENANT_ID]
-        self._client_id = config[MSGENTRA_CONFIG_CLIENT_ID]
-        self._client_secret = config.get(MSGENTRA_CONFIG_CLIENT_SECRET)
-        self._timeout = config.get(MSGENTRA_CONFIG_TIMEOUT, DEFAULT_TIMEOUT)
-        self._certificate_thumbprint = config.get(MSGENTRA_CONFIG_CERTIFICATE_THUMBPRINT)
-        self._certificate_private_key = config.get(MSGENTRA_CONFIG_CERTIFICATE_PRIVATE_KEY)
+        self._tenant = config[consts.MSGENTRA_CONFIG_TENANT_ID]
+        self._client_id = config[consts.MSGENTRA_CONFIG_CLIENT_ID]
+        self._client_secret = config.get(consts.MSGENTRA_CONFIG_CLIENT_SECRET)
+        self._timeout = config.get(consts.MSGENTRA_CONFIG_TIMEOUT, consts.DEFAULT_TIMEOUT)
+        self._certificate_thumbprint = config.get(consts.MSGENTRA_CONFIG_CERTIFICATE_THUMBPRINT)
+        self._certificate_private_key = config.get(consts.MSGENTRA_CONFIG_CERTIFICATE_PRIVATE_KEY)
 
         # Must either supply client_secret, or both thumbprint and private key
         if self._client_secret is None:
             if self._certificate_thumbprint is None or self._certificate_private_key is None:
-                return self.set_status(phantom.APP_ERROR, MSGENTRA_CBA_FIELDS_ERROR)
+                return self.set_status(phantom.APP_ERROR, consts.MSGENTRA_CBA_FIELDS_ERROR)
 
         if self._client_secret is not None:
             if self._certificate_thumbprint is not None or self._certificate_private_key is not None:
-                return self.set_status(phantom.APP_ERROR, MSGENTRA_FIELD_CONFLICT_ERROR)
+                return self.set_status(phantom.APP_ERROR, consts.MSGENTRA_FIELD_CONFLICT_ERROR)
 
         if self._client_secret is not None:
             self._cba_auth = False
