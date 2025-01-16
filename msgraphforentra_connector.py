@@ -968,36 +968,36 @@ class MsGraphForEntra_Connector(BaseConnector):
             self.send_progress("")
             if phantom.is_fail(status):
                 self._remove_tokens(action_result)
-                self.save_progress(MSGENTRA_TEST_CONNECTIVITY_FAILED_MSG)
+                self.save_progress(consts.MSGENTRA_TEST_CONNECTIVITY_FAILED_MSG)
                 return action_result.get_status()
 
-            self.save_progress(MSGENTRA_CODE_RECEIVED_MSG)
+            self.save_progress(consts.MSGENTRA_CODE_RECEIVED_MSG)
             self._state = _load_app_state(self.get_asset_id(), self)
 
             # if code is not available in the state file
-            if not self._state or not self._state.get(MSGENTRA_CODE_STRING):
+            if not self._state or not self._state.get(consts.MSGENTRA_CODE_STRING):
                 self._remove_tokens(action_result)
-                return action_result.set_status(phantom.APP_ERROR, status_message=MSGENTRA_TEST_CONNECTIVITY_FAILED_MSG)
+                return action_result.set_status(phantom.APP_ERROR, status_message=consts.MSGENTRA_TEST_CONNECTIVITY_FAILED_MSG)
 
-            current_code = self._state.get(MSGENTRA_CODE_STRING)
+            current_code = self._state.get(consts.MSGENTRA_CODE_STRING)
 
-        self.save_progress(MSGENTRA_GENERATING_ACCESS_TOKEN_MSG)
+        self.save_progress(consts.MSGENTRA_GENERATING_ACCESS_TOKEN_MSG)
 
         if not self._non_interactive:
             data = {
                 "client_id": self._client_id,
                 "grant_type": "authorization_code",
                 "redirect_uri": redirect_uri,
-                MSGENTRA_CODE_STRING: current_code,
-                "resource": MSGENTRA_RESOURCE_URL,
+                consts.MSGENTRA_CODE_STRING: current_code,
+                "resource": consts.MSGENTRA_RESOURCE_URL,
                 "client_secret": self._client_secret,
             }
         else:
             data = {
                 "client_id": self._client_id,
-                "grant_type": MSGENTRA_CLIENT_CREDENTIALS_STRING,
+                "grant_type": consts.MSGENTRA_CLIENT_CREDENTIALS_STRING,
                 "client_secret": self._client_secret,
-                "resource": MSGENTRA_RESOURCE_URL,
+                "resource": consts.MSGENTRA_RESOURCE_URL,
             }
         # For first time access, new access token is generated
         ret_val = self._generate_new_access_token(action_result=action_result, data=data)
