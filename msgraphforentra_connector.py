@@ -334,7 +334,7 @@ class MsGraphForEntra_Connector(BaseConnector):
         """
         if not state.get("is_encrypted"):
             return state
-        return self.check_state_fields(state, encryption_helper.decrypt, MSGENTRA_DECRYPTION_ERROR)
+        return self.check_state_fields(state, encryption_helper.decrypt, consts.MSGENTRA_DECRYPTION_ERROR)
 
     def _encrypt_state(self, state):
         """
