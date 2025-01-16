@@ -522,7 +522,7 @@ class MsGraphForEntra_Connector(BaseConnector):
         """
 
         error_code = None
-        error_msg = MSGENTRA_ERROR_MSG_UNAVAILABLE
+        error_msg = consts.MSGENTRA_ERROR_MSG_UNAVAILABLE
 
         self.error_print("Error occurred.", e)
 
