@@ -15,7 +15,7 @@
             "name": "Ian Wills"
         }
     ],
-    "license": "Copyright (c) 2022-2024 Splunk Inc.",
+    "license": "Copyright (c) 2022-2025 Splunk Inc.",
     "app_version": "1.0.0",
     "utctime_updated": "2024-12-17T19:23:33.000000Z",
     "package_name": "phantom_msgraphforentra",
