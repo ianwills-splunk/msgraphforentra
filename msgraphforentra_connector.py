@@ -645,7 +645,7 @@ class MsGraphForEntra_Connector(BaseConnector):
         if headers is None:
             headers = {}
 
-        headers.update({"User-Agent": MSGENTRA_USER_AGENT.format(product_version=self.get_app_json().get("app_version"))})
+        headers.update({"User-Agent": consts.MSGENTRA_USER_AGENT.format(product_version=self.get_app_json().get("app_version"))})
         try:
             request_func = getattr(requests, method)
         except AttributeError:
