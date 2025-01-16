@@ -19,10 +19,7 @@ import phantom.app as phantom
 from phantom.action_result import ActionResult
 from phantom.base_connector import BaseConnector
 
-try:
-    from urllib.parse import quote, urlencode
-except Exception:
-    from urllib import quote, urlencode
+from urllib.parse import quote, urlencode
 
 import ast
 import grp
