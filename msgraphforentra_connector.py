@@ -562,17 +562,17 @@ class MsGraphForEntra_Connector(BaseConnector):
         if not self._non_interactive:
             token_data = {
                 "client_id": self._client_id,
-                "grant_type": MSGENTRA_REFRESH_TOKEN_STRING,
+                "grant_type": consts.MSGENTRA_REFRESH_TOKEN_STRING,
                 "refresh_token": self._refresh_token,
                 "client_secret": self._client_secret,
-                "resource": MSGENTRA_RESOURCE_URL,
+                "resource": consts.MSGENTRA_RESOURCE_URL,
             }
         else:
             token_data = {
                 "client_id": self._client_id,
-                "grant_type": MSGENTRA_CLIENT_CREDENTIALS_STRING,
+                "grant_type": consts.MSGENTRA_CLIENT_CREDENTIALS_STRING,
                 "client_secret": self._client_secret,
-                "resource": MSGENTRA_RESOURCE_URL,
+                "resource": consts.MSGENTRA_RESOURCE_URL,
             }
 
         if not self._access_token:
