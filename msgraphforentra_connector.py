@@ -498,19 +498,19 @@ class MsGraphForEntra_Connector(BaseConnector):
         if parameter is not None:
             try:
                 if not float(parameter).is_integer():
-                    return action_result.set_status(phantom.APP_ERROR, MSGENTRA_VALID_INTEGER_MSG.format(key)), None
+                    return action_result.set_status(phantom.APP_ERROR, consts.MSGENTRA_VALID_INTEGER_MSG.format(key)), None
 
                 parameter = int(parameter)
             except Exception:
-                return action_result.set_status(phantom.APP_ERROR, MSGENTRA_VALID_INTEGER_MSG.format(key)), None
+                return action_result.set_status(phantom.APP_ERROR, consts.MSGENTRA_VALID_INTEGER_MSG.format(key)), None
 
             # Negative value validation
             if parameter < 0:
-                return action_result.set_status(phantom.APP_ERROR, MSGENTRA_NON_NEG_INT_MSG.format(key)), None
+                return action_result.set_status(phantom.APP_ERROR, consts.MSGENTRA_NON_NEG_INT_MSG.format(key)), None
 
             # Zero value validation
             if not allow_zero and parameter == 0:
-                return action_result.set_status(phantom.APP_ERROR, MSGENTRA_NON_NEG_NON_ZERO_INT_MSG.format(key)), None
+                return action_result.set_status(phantom.APP_ERROR, consts.MSGENTRA_NON_NEG_NON_ZERO_INT_MSG.format(key)), None
 
         return phantom.APP_SUCCESS, parameter
 
