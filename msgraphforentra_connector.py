@@ -1056,18 +1056,18 @@ class MsGraphForEntra_Connector(BaseConnector):
                 return action_result.get_status()
 
             if not response:
-                return action_result.set_status(phantom.APP_ERROR, MSGENTRA_UNEXPECTED_RESPONSE_ERROR)
+                return action_result.set_status(phantom.APP_ERROR, consts.MSGENTRA_UNEXPECTED_RESPONSE_ERROR)
             try:
                 for ele in response["value"]:
                     resource_list.append(ele)
             except Exception as e:
                 error_message = self._get_error_message_from_exception(e)
-                self.debug_print("{}: {}".format(MSGENTRA_UNEXPECTED_RESPONSE_ERROR, error_message))
+                self.debug_print("{}: {}".format(consts.MSGENTRA_UNEXPECTED_RESPONSE_ERROR, error_message))
                 return action_result.set_status(phantom.APP_ERROR, "Error occurred while fetching data. Details: {0}".format(error_message))
-            if not response.get(MSGENTRA_NEXT_PAGE_TOKEN):
+            if not response.get(consts.MSGENTRA_NEXT_PAGE_TOKEN):
                 break
 
-            next_page_token = response[MSGENTRA_NEXT_PAGE_TOKEN]
+            next_page_token = response[consts.MSGENTRA_NEXT_PAGE_TOKEN]
 
             if len(resource_list) >= limit:
                 break
