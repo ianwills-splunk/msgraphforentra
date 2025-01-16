@@ -440,11 +440,11 @@ class MsGraphForEntra_Connector(BaseConnector):
                 for element in msg(["title"]):
                     element.extract()
                 message = "Error from server. Status Code: {0} Error Code: {1} Data from server: {2}".format(
-                    response.status_code, resp_json.get("error", {}).get(MSGENTRA_CODE_STRING), msg.text
+                    response.status_code, resp_json.get("error", {}).get(consts.MSGENTRA_CODE_STRING), msg.text
                 )
             else:
                 message = "Error from server. Status Code: {0} Error Code: {1} Data from server: {2}".format(
-                    response.status_code, resp_json.get("error", {}).get(MSGENTRA_CODE_STRING), msg
+                    response.status_code, resp_json.get("error", {}).get(consts.MSGENTRA_CODE_STRING), msg
                 )
 
         if not message:
