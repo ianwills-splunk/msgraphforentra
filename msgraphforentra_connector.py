@@ -584,7 +584,7 @@ class MsGraphForEntra_Connector(BaseConnector):
 
             if not self._non_interactive and not self._refresh_token:
                 # If none of the access_token and refresh_token is available
-                return action_result.set_status(phantom.APP_ERROR, status_message=MSGENTRA_TOKEN_NOT_AVAILABLE_MSG), None
+                return action_result.set_status(phantom.APP_ERROR, status_message=consts.MSGENTRA_TOKEN_NOT_AVAILABLE_MSG), None
 
             if not self._non_interactive:
                 # If refresh_token is available and access_token is not available, generate new access_token
