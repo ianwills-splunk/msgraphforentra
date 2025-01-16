@@ -597,7 +597,7 @@ class MsGraphForEntra_Connector(BaseConnector):
             {
                 "Authorization": "Bearer {0}".format(self._access_token),
                 "Accept": "application/json",
-                "User-Agent": MSGENTRA_USER_AGENT.format(product_version=self.get_app_json().get("app_version")),
+                "User-Agent": consts.MSGENTRA_USER_AGENT.format(product_version=self.get_app_json().get("app_version")),
                 "Content-Type": "application/json",
             }
         )
