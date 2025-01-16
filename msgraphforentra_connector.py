@@ -1275,15 +1275,15 @@ class MsGraphForEntra_Connector(BaseConnector):
         config = self.get_config()
 
         # params for list risk detections and list risky users
-        start_time_scheduled_poll = config.get(MSGENTRA_CONFIG_START_TIME_SCHEDULED_POLL)
-        filter_risk_detections = config.get(MSGENTRA_CONFIG_FILTER_RISK_DETECTIONS_SCHEDULED_POLL)
-        filter_risky_users = config.get(MSGENTRA_CONFIG_FILTER_RISKY_USERS_SCHEDULED_POLL)
-        risk_detections_last_modified_time = (datetime.now() - timedelta(days=MSGENTRA_DEFAULT_LOOKBACK_DAYS)).strftime(
-            MSGENTRA_APP_DT_STR_FORMAT
+        start_time_scheduled_poll = config.get(consts.MSGENTRA_CONFIG_START_TIME_SCHEDULED_POLL)
+        filter_risk_detections = config.get(consts.MSGENTRA_CONFIG_FILTER_RISK_DETECTIONS_SCHEDULED_POLL)
+        filter_risky_users = config.get(consts.MSGENTRA_CONFIG_FILTER_RISKY_USERS_SCHEDULED_POLL)
+        risk_detections_last_modified_time = (datetime.now() - timedelta(days=consts.MSGENTRA_DEFAULT_LOOKBACK_DAYS)).strftime(
+            consts.MSGENTRA_APP_DT_STR_FORMAT
         )  # Let's fall back to the last 7 days
 
-        risky_users_last_modified_time = (datetime.now() - timedelta(days=MSGENTRA_DEFAULT_LOOKBACK_DAYS)).strftime(
-            MSGENTRA_APP_DT_STR_FORMAT
+        risky_users_last_modified_time = (datetime.now() - timedelta(days=consts.MSGENTRA_DEFAULT_LOOKBACK_DAYS)).strftime(
+            consts.MSGENTRA_APP_DT_STR_FORMAT
         )  # Let's fall back to the last 7 days
 
         if start_time_scheduled_poll:
