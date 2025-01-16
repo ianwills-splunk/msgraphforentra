@@ -36,7 +36,7 @@ import requests
 from bs4 import BeautifulSoup
 from django.http import HttpResponse
 
-from msgraphforentra_consts import *
+import msgraphforentra_consts as consts
 
 
 def _handle_oauth_start(request, path_parts):
