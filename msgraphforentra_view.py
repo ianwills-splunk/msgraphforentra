@@ -38,7 +38,7 @@ def add_results_to_context(all_app_runs, context):
 
     for summary, action_results in all_app_runs:
         for result in action_results:
-            if (ctx_result := get_ctx_result(result)):
+            if ctx_result := get_ctx_result(result):
                 results.append(ctx_result)
 
 

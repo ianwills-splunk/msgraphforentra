@@ -1370,12 +1370,7 @@ class MsGraphForEntra_Connector(BaseConnector):
         self.duplicate_container = 0
 
         risky_users_list = self._paginator(
-            action_result,
-            max_ingestions,
-            consts.MSGENTRA_INGESTION_DEFAULT_PAGE_SIZE,
-            endpoint,
-            poll_filter,
-            orderby
+            action_result, max_ingestions, consts.MSGENTRA_INGESTION_DEFAULT_PAGE_SIZE, endpoint, poll_filter, orderby
         )
         if not risky_users_list and not isinstance(risky_users_list, list):  # Failed to fetch risk detections, regardless of the reason
             self.save_progress("Failed to retrieve risky users")
@@ -1401,7 +1396,7 @@ class MsGraphForEntra_Connector(BaseConnector):
             if consts.MSGENTRA_RISKY_USERS_JSON_LAST_MODIFIED not in risky_users_list[-1]:
                 return action_result.set_status(
                     phantom.APP_ERROR,
-                    "Could not extract {} from latest ingested " "risky user.".format(consts.MSGENTRA_RISKY_USERS_JSON_LAST_MODIFIED)
+                    "Could not extract {} from latest ingested " "risky user.".format(consts.MSGENTRA_RISKY_USERS_JSON_LAST_MODIFIED),
                 )
             self._state[consts.STATE_RISKY_USERS_LAST_TIME] = risky_users_list[-1].get(consts.MSGENTRA_RISKY_USERS_JSON_LAST_MODIFIED)
             self.save_state(self._state)
