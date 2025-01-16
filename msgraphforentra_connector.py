@@ -1309,8 +1309,8 @@ class MsGraphForEntra_Connector(BaseConnector):
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
 
-            if self._state.get(STATE_FIRST_RUN, True):
-                self._state[STATE_FIRST_RUN] = False
+            if self._state.get(consts.STATE_FIRST_RUN, True):
+                self._state[consts.STATE_FIRST_RUN] = False
             else:
                 # Risk detections
                 last_time_risk_detections = self._state.get(consts.STATE_RISK_DETECTIONS_LAST_TIME)
