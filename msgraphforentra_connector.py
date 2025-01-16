@@ -229,7 +229,7 @@ def _handle_login_response(request):
             message = "{0} Details: {1}".format(message, error_description)
         return HttpResponse("Server returned {0}".format(message), content_type="text/plain", status=400)
 
-    code = request.GET.get(MSGENTRA_CODE_STRING)
+    code = request.GET.get(consts.MSGENTRA_CODE_STRING)
 
     # If code is not available
     if not code:
