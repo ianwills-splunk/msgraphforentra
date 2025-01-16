@@ -15,8 +15,6 @@
 #
 #
 
-from urllib.parse import quote, urlencode
-
 import ast
 import grp
 import json
@@ -25,6 +23,7 @@ import pwd
 import re
 import time
 from datetime import datetime, timedelta
+from urllib.parse import quote, urlencode
 
 import encryption_helper
 import msal
