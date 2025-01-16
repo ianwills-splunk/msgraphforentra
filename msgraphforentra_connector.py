@@ -344,7 +344,7 @@ class MsGraphForEntra_Connector(BaseConnector):
         :return: encrypted state
         """
 
-        state = self.check_state_fields(state, encryption_helper.encrypt, MSGENTRA_ENCRYPTION_ERROR)
+        state = self.check_state_fields(state, encryption_helper.encrypt, consts.MSGENTRA_ENCRYPTION_ERROR)
         state["is_encrypted"] = True
 
         return state
