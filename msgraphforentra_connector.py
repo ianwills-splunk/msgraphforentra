@@ -864,7 +864,7 @@ class MsGraphForEntra_Connector(BaseConnector):
             )
             return action_result.set_status(phantom.APP_ERROR, message)
 
-        if not self._non_interactive and self._refresh_token and self._refresh_token != self._state.get(MSGENTRA_REFRESH_TOKEN_STRING):
+        if not self._non_interactive and self._refresh_token and self._refresh_token != self._state.get(consts.MSGENTRA_REFRESH_TOKEN_STRING):
             message = (
                 "Error occurred while saving the newly generated refresh token in the state file."
                 " Please check the owner, owner group, and the permissions of the state file. The SOAR user should have "
