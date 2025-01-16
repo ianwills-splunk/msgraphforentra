@@ -1376,7 +1376,8 @@ class MsGraphForEntra_Connector(BaseConnector):
             max_ingestions,
             consts.MSGENTRA_INGESTION_DEFAULT_PAGE_SIZE,
             endpoint,
-            poll_filter,orderby
+            poll_filter,
+            orderby
         )
         if not risky_users_list and not isinstance(risky_users_list, list):  # Failed to fetch risk detections, regardless of the reason
             self.save_progress("Failed to retrieve risky users")
