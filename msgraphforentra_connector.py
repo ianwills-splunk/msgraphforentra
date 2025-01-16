@@ -1262,10 +1262,10 @@ class MsGraphForEntra_Connector(BaseConnector):
             # Taking current UTC time as end time
             end_time = datetime.utcnow()
             if self._check_invalid_since_utc_time(time):
-                return action_result.set_status(phantom.APP_ERROR, LOG_UTC_SINCE_TIME_ERROR)
+                return action_result.set_status(phantom.APP_ERROR, consts.LOG_UTC_SINCE_TIME_ERROR)
             # Checking future date
             if time >= end_time:
-                message = LOG_GREATER_EQUAL_TIME_ERROR.format(LOG_CONFIG_TIME_POLL_NOW)
+                message = consts.LOG_GREATER_EQUAL_TIME_ERROR.format(consts.LOG_CONFIG_TIME_POLL_NOW)
                 return action_result.set_status(phantom.APP_ERROR, message)
         except Exception as e:
             message = "Invalid date string received. Error occurred while checking date format. Error: {}".format(str(e))
