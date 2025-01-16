@@ -1590,7 +1590,7 @@ def main():
             login_url = "{}login".format(BaseConnector._get_phantom_base_url())
 
             print("Accessing the Login page")
-            r = requests.get(login_url, verify=verify, timeout=DEFAULT_TIMEOUT)
+            r = requests.get(login_url, verify=verify, timeout=consts.DEFAULT_TIMEOUT)
             csrftoken = r.cookies["csrftoken"]
 
             data = dict()
