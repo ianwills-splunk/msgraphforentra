@@ -433,7 +433,7 @@ class MsGraphForEntra_Connector(BaseConnector):
             message = "Error from server. Status Code: {0} Data from server: {1}".format(response.status_code, err)
 
         # For other actions
-        if isinstance(resp_json.get("error"), dict) and resp_json.get("error", {}).get(MSGENTRA_CODE_STRING):
+        if isinstance(resp_json.get("error"), dict) and resp_json.get("error", {}).get(consts.MSGENTRA_CODE_STRING):
             msg = resp_json.get("error", {}).get("message")
             if "text/html" in msg:
                 msg = BeautifulSoup(msg, "html.parser")
