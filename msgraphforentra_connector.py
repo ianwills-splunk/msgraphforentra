@@ -1354,24 +1354,24 @@ class MsGraphForEntra_Connector(BaseConnector):
                 self.debug_print("Error occurred while saving artifacts for risk detections. Error: {}".format(str(e)))
 
         if risk_detections_list:
-            if MSGENTRA_RISK_DETECTION_JSON_LAST_MODIFIED not in risk_detections_list[-1]:
+            if consts.MSGENTRA_RISK_DETECTION_JSON_LAST_MODIFIED not in risk_detections_list[-1]:
                 return action_result.set_status(
                     phantom.APP_ERROR,
-                    "Could not extract {} from latest ingested " "risk detection.".format(MSGENTRA_RISK_DETECTION_JSON_LAST_MODIFIED),
+                    "Could not extract {} from latest ingested " "risk detection.".format(consts.MSGENTRA_RISK_DETECTION_JSON_LAST_MODIFIED),
                 )
-            self._state[STATE_RISK_DETECTIONS_LAST_TIME] = risk_detections_list[-1].get(MSGENTRA_RISK_DETECTION_JSON_LAST_MODIFIED)
+            self._state[consts.STATE_RISK_DETECTIONS_LAST_TIME] = risk_detections_list[-1].get(consts.MSGENTRA_RISK_DETECTION_JSON_LAST_MODIFIED)
             self.save_state(self._state)
 
         # Start of risky users code
-        risky_users_start_time_filter = f"{MSGENTRA_RISKY_USERS_JSON_LAST_MODIFIED} ge {risky_users_last_modified_time}"
+        risky_users_start_time_filter = f"{consts.MSGENTRA_RISKY_USERS_JSON_LAST_MODIFIED} ge {risky_users_last_modified_time}"
         poll_filter = risky_users_start_time_filter if not filter_risky_users else f"{filter_risky_users} and {risky_users_start_time_filter}"
 
-        orderby = MSGENTRA_RISKY_USERS_ORDER_BY
+        orderby = consts.MSGENTRA_RISKY_USERS_ORDER_BY
 
-        endpoint = "{0}{1}".format(MSGENTRA_MSGRAPH_API_BASE_URL, MSGENTRA_LIST_RISKY_USERS_ENDPOINT)
+        endpoint = "{0}{1}".format(consts.MSGENTRA_MSGRAPH_API_BASE_URL, consts.MSGENTRA_LIST_RISKY_USERS_ENDPOINT)
         self.duplicate_container = 0
 
-        risky_users_list = self._paginator(action_result, max_ingestions, MSGENTRA_INGESTION_DEFAULT_PAGE_SIZE, endpoint, poll_filter, orderby)
+        risky_users_list = self._paginator(action_result, max_ingestions, consts.MSGENTRA_INGESTION_DEFAULT_PAGE_SIZE, endpoint, poll_filter, orderby)
         if not risky_users_list and not isinstance(risky_users_list, list):  # Failed to fetch risk detections, regardless of the reason
             self.save_progress("Failed to retrieve risky users")
             return action_result.get_status()
