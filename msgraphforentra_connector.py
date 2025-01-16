@@ -856,7 +856,7 @@ class MsGraphForEntra_Connector(BaseConnector):
         # So we have to check that token from response and token which are saved
         # to state file after successful generation of new token are same or not.
 
-        if self._access_token != self._state.get(MSGENTRA_ACCESS_TOKEN_STRING):
+        if self._access_token != self._state.get(consts.MSGENTRA_ACCESS_TOKEN_STRING):
             message = (
                 "Error occurred while saving the newly generated access token (in place of the expired token) in the state file."
                 " Please check the owner, owner group, and the permissions of the state file. The SOAR user should have "
