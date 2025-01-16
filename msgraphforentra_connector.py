@@ -1300,7 +1300,7 @@ class MsGraphForEntra_Connector(BaseConnector):
         if self.is_poll_now():
             max_ingestions = int(param.get(phantom.APP_JSON_CONTAINER_COUNT))
         else:
-            max_ingestions = config.get(MSGENTRA_CONFIG_MAX_INGESTION, MSGENTRA_INGESTION_DEFAULT_LIMIT)
+            max_ingestions = config.get(consts.MSGENTRA_CONFIG_MAX_INGESTION, consts.MSGENTRA_INGESTION_DEFAULT_LIMIT)
             ret_val, max_ingestions = self._validate_integer(action_result, max_ingestions, "max_ingestions")
 
             if phantom.is_fail(ret_val):
