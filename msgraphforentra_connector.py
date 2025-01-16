@@ -883,17 +883,17 @@ class MsGraphForEntra_Connector(BaseConnector):
 
         app_dir = os.path.dirname(os.path.abspath(__file__))
         # file to check whether the request has been granted or not
-        auth_status_file_path = "{0}/{1}_{2}".format(app_dir, self.get_asset_id(), MSGENTRA_TC_FILE)
+        auth_status_file_path = "{0}/{1}_{2}".format(app_dir, self.get_asset_id(), consts.MSGENTRA_TC_FILE)
         time_out = False
 
         # wait-time while request is being granted for 105 seconds
-        for _ in range(MSGENTRA_TC_STATUS_WAIT_TIME // MSGENTRA_TC_STATUS_SLEEP):
+        for _ in range(consts.MSGENTRA_TC_STATUS_WAIT_TIME // consts.MSGENTRA_TC_STATUS_SLEEP):
             self.send_progress("Waiting...")
             if os.path.isfile(auth_status_file_path):
                 time_out = True
                 os.unlink(auth_status_file_path)
                 break
-            time.sleep(MSGENTRA_TC_STATUS_SLEEP)
+            time.sleep(consts.MSGENTRA_TC_STATUS_SLEEP)
 
         if not time_out:
             self.send_progress("")
@@ -902,13 +902,13 @@ class MsGraphForEntra_Connector(BaseConnector):
         return phantom.APP_SUCCESS
 
     def _remove_tokens(self, action_result):
-        if len(list(filter(lambda x: x in action_result.get_message(), MSGENTRA_ASSET_PARAM_CHECK_LIST_ERRORS))) > 0:
-            if self._state.get(MSGENTRA_TOKEN_STRING, {}).get(MSGENTRA_ACCESS_TOKEN_STRING):
-                self._state[MSGENTRA_TOKEN_STRING].pop(MSGENTRA_ACCESS_TOKEN_STRING)
-            if self._state.get(MSGENTRA_TOKEN_STRING, {}).get(MSGENTRA_REFRESH_TOKEN_STRING):
-                self._state[MSGENTRA_TOKEN_STRING].pop(MSGENTRA_REFRESH_TOKEN_STRING)
-            if self._state.get(MSGENTRA_CODE_STRING):
-                self._state.pop(MSGENTRA_CODE_STRING)
+        if len(list(filter(lambda x: x in action_result.get_message(), consts.MSGENTRA_ASSET_PARAM_CHECK_LIST_ERRORS))) > 0:
+            if self._state.get(consts.MSGENTRA_TOKEN_STRING, {}).get(consts.MSGENTRA_ACCESS_TOKEN_STRING):
+                self._state[consts.MSGENTRA_TOKEN_STRING].pop(consts.MSGENTRA_ACCESS_TOKEN_STRING)
+            if self._state.get(consts.MSGENTRA_TOKEN_STRING, {}).get(consts.MSGENTRA_REFRESH_TOKEN_STRING):
+                self._state[consts.MSGENTRA_TOKEN_STRING].pop(consts.MSGENTRA_REFRESH_TOKEN_STRING)
+            if self._state.get(consts.MSGENTRA_CODE_STRING):
+                self._state.pop(consts.MSGENTRA_CODE_STRING)
 
     def _handle_test_connectivity(self, param):
         """Testing of given credentials and obtaining authorization for all other actions.
