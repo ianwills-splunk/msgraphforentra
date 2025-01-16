@@ -41,6 +41,7 @@ def add_results_to_context(all_app_runs, context):
             if (ctx_result := get_ctx_result(result)):
                 results.append(ctx_result)
 
+
 def display_risk_detections(provides, all_app_runs, context):
     add_results_to_context(all_app_runs, context)
     return "microsoftentra_list_risk_detections.html"
