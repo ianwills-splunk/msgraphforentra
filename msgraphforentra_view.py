@@ -33,57 +33,29 @@ def get_ctx_result(result):
     return ctx_result
 
 
-def display_risk_detections(provides, all_app_runs, context):
-
+def add_results_to_context(all_app_runs, context):
     context["results"] = results = []
 
     for summary, action_results in all_app_runs:
         for result in action_results:
-            ctx_result = get_ctx_result(result)
-            if not ctx_result:
-                continue
-            results.append(ctx_result)
+            if (ctx_result := get_ctx_result(result)):
+                results.append(ctx_result)
 
+def display_risk_detections(provides, all_app_runs, context):
+    add_results_to_context(all_app_runs, context)
     return "microsoftentra_list_risk_detections.html"
 
 
 def display_risky_users(provides, all_app_runs, context):
-
-    context["results"] = results = []
-
-    for summary, action_results in all_app_runs:
-        for result in action_results:
-            ctx_result = get_ctx_result(result)
-            if not ctx_result:
-                continue
-            results.append(ctx_result)
-
+    add_results_to_context(all_app_runs, context)
     return "microsoftentra_list_risky_users.html"
 
 
 def display_alerts(provides, all_app_runs, context):
-
-    context["results"] = results = []
-
-    for summary, action_results in all_app_runs:
-        for result in action_results:
-            ctx_result = get_ctx_result(result)
-            if not ctx_result:
-                continue
-            results.append(ctx_result)
-
+    add_results_to_context(all_app_runs, context)
     return "microsoft365defender_list_alerts.html"
 
 
 def update_alert(provides, all_app_runs, context):
-
-    context["results"] = results = []
-
-    for summary, action_results in all_app_runs:
-        for result in action_results:
-            ctx_result = get_ctx_result(result)
-            if not ctx_result:
-                continue
-            results.append(ctx_result)
-
+    add_results_to_context(all_app_runs, context)
     return "microsoft365defender_update_alert.html"
