@@ -1531,22 +1531,22 @@ class MsGraphForEntra_Connector(BaseConnector):
             self.debug_print("Resetting the state file with the default format")
             self._state = {"app_version": self.get_app_json().get("app_version")}
             if not self._non_interactive:
-                return self.set_status(phantom.APP_ERROR, MSGENTRA_STATE_FILE_CORRUPT_ERROR)
+                return self.set_status(phantom.APP_ERROR, consts.MSGENTRA_STATE_FILE_CORRUPT_ERROR)
 
-        self._access_token = self._state.get(MSGENTRA_ACCESS_TOKEN_STRING, None)
-        self._refresh_token = self._state.get(MSGENTRA_REFRESH_TOKEN_STRING, None)
+        self._access_token = self._state.get(consts.MSGENTRA_ACCESS_TOKEN_STRING, None)
+        self._refresh_token = self._state.get(consts.MSGENTRA_REFRESH_TOKEN_STRING, None)
         if not self._non_interactive and action_id != "test_connectivity" and (not self._access_token or not self._refresh_token):
             token_data = {
                 "client_id": self._client_id,
-                "grant_type": MSGENTRA_REFRESH_TOKEN_STRING,
+                "grant_type": consts.MSGENTRA_REFRESH_TOKEN_STRING,
                 "refresh_token": self._refresh_token,
                 "client_secret": self._client_secret,
-                "resource": MSGENTRA_RESOURCE_URL,
+                "resource": consts.MSGENTRA_RESOURCE_URL,
             }
             ret_val = self._generate_new_access_token(action_result=action_result, data=token_data)
 
             if phantom.is_fail(ret_val):
-                return self.set_status(phantom.APP_ERROR, "{0}. {1}".format(MSGENTRA_RUN_CONNECTIVITY_MSG, action_result.get_message()))
+                return self.set_status(phantom.APP_ERROR, "{0}. {1}".format(consts.MSGENTRA_RUN_CONNECTIVITY_MSG, action_result.get_message()))
 
         return phantom.APP_SUCCESS
 
