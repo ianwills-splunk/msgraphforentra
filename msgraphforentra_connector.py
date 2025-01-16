@@ -239,10 +239,10 @@ def _handle_login_response(request):
 
     # If value of admin_consent is not available, value of code is available
     try:
-        state[MSGENTRA_CODE_STRING] = code
-        state[MSGENTRA_STATE_IS_ENCRYPTED] = True
+        state[consts.MSGENTRA_CODE_STRING] = code
+        state[consts.MSGENTRA_STATE_IS_ENCRYPTED] = True
     except Exception as e:
-        return HttpResponse("{}: {}".format(MSGENTRA_DECRYPTION_ERROR, str(e)), content_type="text/plain", status=400)
+        return HttpResponse(f"{consts.MSGENTRA_DECRYPTION_ERROR}: {e!s}", content_type="text/plain", status=400)
 
     _save_app_state(state, asset_id, None)
 
