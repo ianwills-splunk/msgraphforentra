@@ -15,10 +15,6 @@
 #
 #
 
-import phantom.app as phantom
-from phantom.action_result import ActionResult
-from phantom.base_connector import BaseConnector
-
 from urllib.parse import quote, urlencode
 
 import ast
@@ -32,9 +28,12 @@ from datetime import datetime, timedelta
 
 import encryption_helper
 import msal
+import phantom.app as phantom
 import requests
 from bs4 import BeautifulSoup
 from django.http import HttpResponse
+from phantom.action_result import ActionResult
+from phantom.base_connector import BaseConnector
 
 import msgraphforentra_consts as consts
 
