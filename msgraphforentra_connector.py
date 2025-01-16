@@ -1005,23 +1005,23 @@ class MsGraphForEntra_Connector(BaseConnector):
         if phantom.is_fail(ret_val):
             self.send_progress("")
             self._remove_tokens(action_result)
-            self.save_progress(MSGENTRA_TEST_CONNECTIVITY_FAILED_MSG)
+            self.save_progress(consts.MSGENTRA_TEST_CONNECTIVITY_FAILED_MSG)
             return action_result.get_status()
 
-        self.save_progress(MSGENTRA_ALERTS_INFO_MSG)
+        self.save_progress(consts.MSGENTRA_ALERTS_INFO_MSG)
 
-        url = "{}{}".format(MSGENTRA_MSGRAPH_API_BASE_URL, MSGENTRA_LIST_RISK_EVENTS_ENDPOINT)
+        url = "{}{}".format(consts.MSGENTRA_MSGRAPH_API_BASE_URL, consts.MSGENTRA_LIST_RISK_EVENTS_ENDPOINT)
         params = {"$top": 1}  # page size of the result set
 
         ret_val, _ = self._update_request(action_result=action_result, endpoint=url, params=params)
         if phantom.is_fail(ret_val):
             self.send_progress("")
             self._remove_tokens(action_result)
-            self.save_progress(MSGENTRA_TEST_CONNECTIVITY_FAILED_MSG)
+            self.save_progress(consts.MSGENTRA_TEST_CONNECTIVITY_FAILED_MSG)
             return action_result.get_status()
 
-        self.save_progress(MSGENTRA_RECEIVED_RISK_DETECTION_INFO_MSG)
-        self.save_progress(MSGENTRA_TEST_CONNECTIVITY_PASSED_MSG)
+        self.save_progress(consts.MSGENTRA_RECEIVED_RISK_DETECTION_INFO_MSG)
+        self.save_progress(consts.MSGENTRA_TEST_CONNECTIVITY_PASSED_MSG)
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _paginator(self, action_result, limit, page_size, endpoint, filter, orderby=None):
