@@ -32,7 +32,7 @@ are the default ports used by Splunk SOAR.
 -   Non-Interactive Auth - It is used to determine the authentication method. If it is checked then
     non-Interactive auth will be used otherwise interactive auth will be used. Whenever this
     checkbox is toggled then the test connectivity action must be run again. NOTE: Non-Interactive Auth
-    be checked for Certificate Based Authentication.
+    must be checked for Certificate Based Authentication.
 -   Certificate Thumbprint - Obtained from Microsoft Entra, after uploading certificate.
 -   Certificate Private Key - Certificate Private Key in PEM format.
 -   Timeout - It is used to make configurable timeout for all actions.
