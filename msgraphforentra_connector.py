@@ -918,7 +918,7 @@ class MsGraphForEntra_Connector(BaseConnector):
         """
 
         action_result = self.add_action_result(ActionResult(dict(param)))
-        self.save_progress(MSGENTRA_MAKING_CONNECTION_MSG)
+        self.save_progress(consts.MSGENTRA_MAKING_CONNECTION_MSG)
 
         if not self._state:
             self._state = {}
