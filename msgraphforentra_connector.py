@@ -1250,12 +1250,12 @@ class MsGraphForEntra_Connector(BaseConnector):
             :return: bool(True/False)
         """
         # Check that given time must not be before 1970-01-01T00:00:00Z.
-        return time < datetime.strptime("1970-01-01T00:00:00Z", MSGENTRA_APP_DT_STR_FORMAT)
+        return time < datetime.strptime("1970-01-01T00:00:00Z", consts.MSGENTRA_APP_DT_STR_FORMAT)
 
     def _check_date_format(self, action_result, date):
         try:
             # Check for the time is in valid format or not
-            time = datetime.strptime(date, MSGENTRA_APP_DT_STR_FORMAT)
+            time = datetime.strptime(date, consts.MSGENTRA_APP_DT_STR_FORMAT)
             # Taking current UTC time as end time
             end_time = datetime.utcnow()
             if self._check_invalid_since_utc_time(time):
