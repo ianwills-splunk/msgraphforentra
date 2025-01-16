@@ -754,7 +754,7 @@ class MsGraphForEntra_Connector(BaseConnector):
                 private_key = "\n".join([m.group(1), m.group(2).replace(" ", "\n"), m.group(3)])
                 return phantom.APP_SUCCESS, private_key
             else:
-                return action_result.set_status(phantom.APP_ERROR, MSGENTRA_CBA_KEY_ERROR), None
+                return action_result.set_status(phantom.APP_ERROR, consts.MSGENTRA_CBA_KEY_ERROR), None
 
     def _generate_new_cba_access_token(self, action_result):
 
