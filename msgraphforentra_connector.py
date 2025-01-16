@@ -1085,16 +1085,16 @@ class MsGraphForEntra_Connector(BaseConnector):
 
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        limit = param.get(MSGENTRA_INCIDENT_LIMIT, MSGENTRA_INGESTION_DEFAULT_LIMIT)
-        filter = param.get(MSGENTRA_INCIDENT_FILTER)
-        orderby = param.get(MSGENTRA_INCIDENT_ORDER_BY)
-        page_size = MSGENTRA_INGESTION_DEFAULT_PAGE_SIZE
+        limit = param.get(consts.MSGENTRA_INCIDENT_LIMIT, consts.MSGENTRA_INGESTION_DEFAULT_LIMIT)
+        filter = param.get(consts.MSGENTRA_INCIDENT_FILTER)
+        orderby = param.get(consts.MSGENTRA_INCIDENT_ORDER_BY)
+        page_size = consts.MSGENTRA_INGESTION_DEFAULT_PAGE_SIZE
 
-        ret_val, limit = self._validate_integer(action_result, limit, MSGENTRA_LIMIT_KEY, allow_zero=False)
+        ret_val, limit = self._validate_integer(action_result, limit, consts.MSGENTRA_LIMIT_KEY, allow_zero=False)
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
-        endpoint = "{0}{1}".format(MSGENTRA_MSGRAPH_API_BASE_URL, MSGENTRA_LIST_RISK_EVENTS_ENDPOINT)
+        endpoint = "{0}{1}".format(consts.MSGENTRA_MSGRAPH_API_BASE_URL, consts.MSGENTRA_LIST_RISK_EVENTS_ENDPOINT)
 
         risk_detection_list = self._paginator(action_result, limit, page_size, endpoint, filter, orderby)
 
