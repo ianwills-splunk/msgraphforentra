@@ -928,26 +928,26 @@ class MsGraphForEntra_Connector(BaseConnector):
             ret_val, app_rest_url = self._get_app_rest_url(action_result)
             if phantom.is_fail(ret_val):
                 self._remove_tokens(action_result)
-                self.save_progress(MSGENTRA_TEST_CONNECTIVITY_FAILED_MSG)
+                self.save_progress(consts.MSGENTRA_TEST_CONNECTIVITY_FAILED_MSG)
                 return action_result.get_status()
 
             # Append /result to create redirect_uri
             redirect_uri = "{0}/result".format(app_rest_url)
             self._state["redirect_uri"] = redirect_uri
 
-            self.save_progress(MSGENTRA_OAUTH_URL_MSG)
+            self.save_progress(consts.MSGENTRA_OAUTH_URL_MSG)
             self.save_progress(redirect_uri)
 
             # Authorization URL used to make request for getting code which is used to generate access token
-            authorization_url = MSGENTRA_AUTHORIZE_URL.format(
+            authorization_url = consts.MSGENTRA_AUTHORIZE_URL.format(
                 tenant_id=quote(self._tenant),
                 client_id=quote(self._client_id),
                 redirect_uri=redirect_uri,
                 state=self.get_asset_id(),
-                response_type=MSGENTRA_CODE_STRING,
-                resource=MSGENTRA_RESOURCE_URL,
+                response_type=consts.MSGENTRA_CODE_STRING,
+                resource=consts.MSGENTRA_RESOURCE_URL,
             )
-            authorization_url = "{}{}".format(MSGENTRA_LOGIN_BASE_URL, authorization_url)
+            authorization_url = "{}{}".format(consts.MSGENTRA_LOGIN_BASE_URL, authorization_url)
 
             self._state["authorization_url"] = authorization_url
 
@@ -955,11 +955,11 @@ class MsGraphForEntra_Connector(BaseConnector):
             url_for_authorize_request = "{0}/start_oauth?asset_id={1}&".format(app_rest_url, self.get_asset_id())
             _save_app_state(self._state, self.get_asset_id(), self)
 
-            self.save_progress(MSGENTRA_AUTHORIZE_USER_MSG)
+            self.save_progress(consts.MSGENTRA_AUTHORIZE_USER_MSG)
             self.save_progress(url_for_authorize_request)  # nosemgrep
 
             # Wait time for authorization
-            time.sleep(MSGENTRA_AUTHORIZE_WAIT_TIME)
+            time.sleep(consts.MSGENTRA_AUTHORIZE_WAIT_TIME)
 
             # Wait for some while user login to Microsoft
             status = self._wait(action_result=action_result)
