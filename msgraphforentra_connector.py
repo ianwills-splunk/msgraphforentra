@@ -607,7 +607,7 @@ class MsGraphForEntra_Connector(BaseConnector):
         )
 
         # If token is expired, generate new token
-        if MSGENTRA_TOKEN_EXPIRED in action_result.get_message():
+        if consts.MSGENTRA_TOKEN_EXPIRED in action_result.get_message():
             # Token is invalid, so set it to None to regenerate
             self._access_token = None
             status = self._generate_new_access_token(action_result=action_result, data=token_data)
