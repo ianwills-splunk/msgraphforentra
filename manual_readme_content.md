@@ -14,7 +14,7 @@
 [comment]: # "and limitations under the License. "
 ## Port Information
 
-The app uses HTTP/ HTTPS protocol for communicating with the Microsoft 365 Defender server. Below
+The app uses HTTP(S) protocol for communicating with the Microsoft Entra service. Below
 are the default ports used by Splunk SOAR.
 
 | SERVICE NAME | TRANSPORT PROTOCOL | PORT |
