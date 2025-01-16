@@ -1231,7 +1231,7 @@ class MsGraphForEntra_Connector(BaseConnector):
 
         body_json = f'{{ "userids": {json.dumps(userid_list)} }}'
 
-        endpoint = "{0}{1}".format(MSGENTRA_MSGRAPH_API_BASE_URL, MSGENTRA_DISMISS_RISKY_USERS_ENDPOINT)
+        endpoint = "{0}{1}".format(consts.MSGENTRA_MSGRAPH_API_BASE_URL, consts.MSGENTRA_DISMISS_RISKY_USERS_ENDPOINT)
         ret_val, response = self._update_request(endpoint=endpoint, action_result=action_result, params=None, method="post", data=body_json)
 
         if phantom.is_fail(ret_val):
@@ -1239,7 +1239,7 @@ class MsGraphForEntra_Connector(BaseConnector):
 
         action_result.add_data(response)
 
-        return action_result.set_status(phantom.APP_SUCCESS, MSGENTRA_DISMISSED_RISKY_USER_SUCCESSFULLY)
+        return action_result.set_status(phantom.APP_SUCCESS, consts.MSGENTRA_DISMISSED_RISKY_USER_SUCCESSFULLY)
 
     @staticmethod
     def _check_invalid_since_utc_time(time: datetime) -> bool:
