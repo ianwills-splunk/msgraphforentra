@@ -762,20 +762,20 @@ class MsGraphForEntra_Connector(BaseConnector):
 
         # Certificate Based Authentication requires both Certificate Thumbprint and Certificate Private Key
         if not (self._certificate_thumbprint and self._certificate_private_key):
-            self.save_progress(MSGENTRA_CBA_AUTH_ERROR)
+            self.save_progress(consts.MSGENTRA_CBA_AUTH_ERROR)
             return self.set_status(phantom.APP_ERROR), None
 
         # Check non-interactive is enabled for CBA auth
         if not self._non_interactive:
-            self.save_progress(MSGENTRA_CBA_INTERACTIVE_ERROR)
+            self.save_progress(consts.MSGENTRA_CBA_INTERACTIVE_ERROR)
             return self.set_status(phantom.APP_ERROR), None
 
         ret_val, self._private_key = self._get_private_key(action_result)
         if phantom.is_fail(ret_val):
             return action_result.get_status(), None
 
-        authority = f"{MSGENTRA_LOGIN_BASE_URL}/{self._tenant}"
-        scope = [f"{MSGENTRA_RESOURCE_URL}/.default"]
+        authority = f"{consts.MSGENTRA_LOGIN_BASE_URL}/{self._tenant}"
+        scope = [f"{consts.MSGENTRA_RESOURCE_URL}/.default"]
 
         try:
             app = msal.ConfidentialClientApplication(
