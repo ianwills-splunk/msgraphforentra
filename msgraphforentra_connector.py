@@ -707,14 +707,14 @@ class MsGraphForEntra_Connector(BaseConnector):
         base url of phantom
         """
 
-        url = "{}{}".format(MSGENTRA_SOAR_BASE_URL.format(soar_base_url=self.get_phantom_base_url()), MSGENTRA_SOAR_SYS_INFO_URL)
+        url = f"{consts.MSGENTRA_SOAR_BASE_URL.format(soar_base_url=self.get_phantom_base_url())}{consts.MSGENTRA_SOAR_SYS_INFO_URL}
         ret_val, resp_json = self._make_rest_call(action_result=action_result, endpoint=url, verify=False)
         if phantom.is_fail(ret_val):
             return ret_val, None
 
         soar_base_url = resp_json.get("base_url").rstrip("/")
         if not soar_base_url:
-            return action_result.set_status(phantom.APP_ERROR, MSGENTRA_BASE_URL_NOT_FOUND_MSG), None
+            return action_result.set_status(phantom.APP_ERROR, consts.MSGENTRA_BASE_URL_NOT_FOUND_MSG), None
         return phantom.APP_SUCCESS, soar_base_url
 
     def _get_app_rest_url(self, action_result):
