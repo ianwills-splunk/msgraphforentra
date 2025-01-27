@@ -155,7 +155,43 @@
                     "order": 0
                 }
             },
-            "output": [],
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Successfully dismissed risk for specified userids"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.userids",
+                    "data_type": "string",
+                    "example_values": [
+                        "ba9e3378-9e5c-4159-a022-e6fee173bf35"
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
             "versions": "EQ(*)"
         },
         {
@@ -365,7 +401,7 @@
                 "type": "custom",
                 "width": 10,
                 "height": 5,
-                "view": "microsoftentra_view.display_risk_detections",
+                "view": "msgraphforentra_view.display_risk_detections",
                 "title": "List Risk Detections"
             },
             "versions": "EQ(*)"
@@ -577,7 +613,7 @@
                 "type": "custom",
                 "width": 10,
                 "height": 5,
-                "view": "microsoftentra_view.display_risky_users",
+                "view": "msgraphforentra_view.display_risky_users",
                 "title": "List Risky Users"
             },
             "versions": "EQ(*)"
@@ -617,7 +653,7 @@
                 "type": "custom",
                 "width": 10,
                 "height": 5,
-                "view": "microsoftentra_view.display_incidents",
+                "view": "msgraphforentra_view.display_incidents",
                 "title": "List Incidents"
             },
             "versions": "EQ(*)"
@@ -963,23 +999,14 @@
                 "type": "custom",
                 "width": 10,
                 "height": 5,
-                "view": "microsoftentra_view.display_incidents",
+                "view": "msgraphforentra_view.display_incidents",
                 "title": "List Incidents"
             },
             "versions": "EQ(*)"
         }
     ],
     "pip_dependencies": {
-        "wheel": [
-            {
-                "module": "beautifulsoup4",
-                "input_file": "wheels/py3/beautifulsoup4-4.9.1-py3-none-any.whl"
-            },
-            {
-                "module": "soupsieve",
-                "input_file": "wheels/py3/soupsieve-2.3.2.post1-py3-none-any.whl"
-            }
-        ]
+        "wheel": []
     },
     "pip39_dependencies": {
         "wheel": [

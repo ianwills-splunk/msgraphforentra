@@ -44,19 +44,19 @@ def add_results_to_context(all_app_runs, context):
 
 def display_risk_detections(provides, all_app_runs, context):
     add_results_to_context(all_app_runs, context)
-    return "microsoftentra_list_risk_detections.html"
+    return "msgraphforentra_list_risk_detections.html"
 
 
 def display_risky_users(provides, all_app_runs, context):
     add_results_to_context(all_app_runs, context)
-    return "microsoftentra_list_risky_users.html"
+    return "msgraphforentra_list_risky_users.html"
 
 
 def display_alerts(provides, all_app_runs, context):
     add_results_to_context(all_app_runs, context)
-    return "microsoft365defender_list_alerts.html"
+    return "msgraphforentra_list_alerts.html"
 
 
 def update_alert(provides, all_app_runs, context):
     add_results_to_context(all_app_runs, context)
-    return "microsoft365defender_update_alert.html"
+    return "msgraphforentra_update_alert.html"

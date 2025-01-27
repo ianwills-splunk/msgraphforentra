@@ -793,7 +793,6 @@ class MsGraphForEntra_Connector(BaseConnector):
         result = None
         if self._access_token is None:
             result = app.acquire_token_for_client(scopes=scope)
-
             self._state = self.load_state()
             self._access_token = result["access_token"]
             self._state["access_token"] = result["access_token"]
@@ -1627,3 +1626,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# Comment to test pre-commit
