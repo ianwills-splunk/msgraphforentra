@@ -484,7 +484,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.isDeleted",
-                    "data_type": "numeric",
+                    "data_type": "boolean",
                     "example_values": [
                         false
                     ]
@@ -512,7 +512,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.isProcessing",
-                    "data_type": "numeric",
+                    "data_type": "boolean",
                     "example_values": [
                         false
                     ]
@@ -798,7 +798,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.deviceDetail.isManaged",
-                    "data_type": "numeric",
+                    "data_type": "boolean",
                     "example_values": [
                         false
                     ]
@@ -819,7 +819,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.deviceDetail.isCompliant",
-                    "data_type": "numeric",
+                    "data_type": "boolean",
                     "example_values": [
                         false
                     ]
@@ -847,7 +847,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.isInteractive",
-                    "data_type": "numeric",
+                    "data_type": "boolean",
                     "example_values": [
                         true
                     ]
@@ -1127,7 +1127,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.deviceDetail.isManaged",
-                    "data_type": "numeric",
+                    "data_type": "boolean",
                     "example_values": [
                         false
                     ]
@@ -1148,7 +1148,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.deviceDetail.isCompliant",
-                    "data_type": "numeric",
+                    "data_type": "boolean",
                     "example_values": [
                         false
                     ]

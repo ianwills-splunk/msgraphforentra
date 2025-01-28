@@ -148,8 +148,8 @@
                                         {% else %}
                                             <td>None</td>
                                         {% endif %}
-                                        <td>{{ riskyuser.isDeleted | default:"None" }}</td>
-                                        <td>{{ riskyuser.isProcessing | default:"None" }}</td>
+                                        <td>{{ riskyuser.isDeleted }}</td>
+                                        <td>{{ riskyuser.isProcessing }}</td>
                                         <td>{{ riskyuser.riskState | default:"None" }}</td>
                                         <td>{{ riskyuser.riskLevel | default:"None" }}</td>
                                         <td>{{ riskyuser.riskDetail | default:"None" }}</td>
