@@ -152,6 +152,10 @@
                 "userids": {
                     "data_type": "string",
                     "description": "One or more userids to dismiss risk for",
+                    "primary": true,
+                    "contains": [
+                        "entra risky userid"
+                    ],
                     "order": 0
                 }
             },
@@ -220,11 +224,196 @@
             },
             "output": [
                 {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "string",
+                    "example_values": [],
+                    "contains": [
+                        "sha256"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.source",
+                    "data_type": "string",
+                    "example_values": [
+                        "IdentityProtection"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.userId",
+                    "data_type": "string",
+                    "example_values": [
+                        "ba9e3378-9e5c-4159-a022-e6fee173bf35"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.activity",
+                    "data_type": "string",
+                    "example_values": [
+                        "signin"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.location.city",
+                    "data_type": "string",
+                    "example_values": [
+                        "Paris"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.location.state",
+                    "data_type": "string",
+                    "example_values": [
+                        "Paris"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.location.geoCoordinates.latitude",
+                    "data_type": "numeric",
+                    "example_values": [
+                        48.87276
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.location.geoCoordinates.longitude",
+                    "data_type": "numeric",
+                    "example_values": [
+                        2.27278
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.location.countryOrRegion",
+                    "data_type": "string",
+                    "example_values": [
+                        "FR"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.ipAddress",
+                    "data_type": "string",
+                    "example_values": [
+                        "2a0e:e701:1198::1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.requestId",
+                    "data_type": "string",
+                    "example_values": [
+                        "aea71ec6-4431-421e-ac52-0592973b3c00"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.riskLevel",
+                    "data_type": "string",
+                    "example_values": [
+                        "medium"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.riskState",
+                    "data_type": "string",
+                    "example_values": [
+                        "dismissed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.riskDetail",
+                    "data_type": "string",
+                    "example_values": [
+                        "adminDismissedAllRiskForUser"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.correlationId",
+                    "data_type": "string",
+                    "example_values": [
+                        "6fe21b2f-63b3-4590-a440-2cd21c9f0bff"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.riskEventType",
+                    "data_type": "string",
+                    "example_values": [
+                        "anonymizedIPAddress"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.additionalInfo",
+                    "data_type": "string",
+                    "example_values": [
+                        "[{\"Key\":\"userAgent\",\"Value\":\"Mozilla/5.0 (Windows NT 10.0; rv:109.0) Gecko/20100101 Firefox/115.0\"},{\"Key\":\"mitreTechniques\",\"Value\":\"T1090.003,T1078\"}]"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.tokenIssuerType",
+                    "data_type": "string",
+                    "example_values": [
+                        "AzureAD"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.userDisplayName",
+                    "data_type": "string",
+                    "example_values": [
+                        "Lee Gu"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.activityDateTime",
+                    "data_type": "string",
+                    "example_values": [
+                        "2025-01-27T19:00:24.0871469Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.detectedDateTime",
+                    "data_type": "string",
+                    "example_values": [
+                        "2025-01-27T19:00:24.0871469Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.userPrincipalName",
+                    "data_type": "string",
+                    "example_values": [
+                        "LeeG@tlp5x.onmicrosoft.com"
+                    ],
+                    "contains": [
+                        "email"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.detectionTimingType",
+                    "data_type": "string",
+                    "example_values": [
+                        "realtime"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.lastUpdatedDateTime",
+                    "data_type": "string",
+                    "example_values": [
+                        "2025-01-27T19:52:10.3086944Z"
+                    ]
+                },
+                {
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success",
-                        "failed"
+                        "success"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Total risk detections: 1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.total_risk_detections",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
                     ]
                 },
                 {
@@ -232,154 +421,6 @@
                     "data_type": "numeric",
                     "example_values": [
                         50
-                    ]
-                },
-                {
-                    "data_path": "action_result.parameter.filter",
-                    "data_type": "string",
-                    "example_values": [
-                        "status eq 'active'"
-                    ]
-                },
-                {
-                    "data_path": "action_result.parameter.orderby",
-                    "data_type": "string",
-                    "example_values": [
-                        "lastUpdateDateTime desc"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.assignedTo",
-                    "data_type": "string",
-                    "example_values": [
-                        "testuser@abc.com"
-                    ],
-                    "contains": [
-                        "email"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.userDisplayName",
-                    "data_type": "string",
-                    "example_values": [
-                        "unknown"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.comments.*.comment",
-                    "data_type": "string",
-                    "example_values": [
-                        "Testing comment"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.comments.*.createdByDisplayName",
-                    "data_type": "string",
-                    "example_values": [
-                        "testuser@abc.com"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.comments.*.createdDateTime",
-                    "data_type": "string",
-                    "example_values": [
-                        "2022-06-08T08:34:40.68416Z"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.createdDateTime",
-                    "data_type": "string",
-                    "example_values": [
-                        "2022-06-13T10:36:05.7Z"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.determination",
-                    "data_type": "string",
-                    "example_values": [
-                        "unknown"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.displayName",
-                    "data_type": "string",
-                    "example_values": [
-                        "Malware incident on one endpoint"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.id",
-                    "data_type": "string",
-                    "example_values": [
-                        "145"
-                    ],
-                    "contains": [
-                        "defender incident id"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.incidentWebUrl",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://test.com/incidents/45?tid=xxxxx670-d7ef-580d-a225-d48057e74df6"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.lastUpdateDateTime",
-                    "data_type": "string",
-                    "example_values": [
-                        "2022-06-13T12:57:22.3633333Z"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.redirectIncidentId",
-                    "data_type": "string",
-                    "example_values": [
-                        "48"
-                    ],
-                    "contains": [
-                        "defender incident id"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.severity",
-                    "data_type": "string",
-                    "example_values": [
-                        "high"
-                    ],
-                    "contains": [
-                        "defender severity"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "active"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.tenantId",
-                    "data_type": "string",
-                    "example_values": [
-                        "xxxxx670-d7ef-580d-a225-d48057e74df6"
-                    ]
-                },
-                {
-                    "data_path": "action_result.summary.total_incidents",
-                    "data_type": "numeric",
-                    "example_values": [
-                        50
-                    ]
-                },
-                {
-                    "data_path": "action_result.message",
-                    "data_type": "string",
-                    "example_values": [
-                        "Total incidents: 50"
                     ]
                 },
                 {
@@ -432,11 +473,93 @@
             },
             "output": [
                 {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "string",
+                    "contains": [
+                        "entra risky userid"
+                    ],
+                    "example_values": [
+                        "a75e9d70-b67e-42f7-bbd3-8c586e4b8d2e"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.isDeleted",
+                    "data_type": "numeric",
+                    "example_values": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.riskLevel",
+                    "data_type": "string",
+                    "example_values": [
+                        "none"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.riskState",
+                    "data_type": "string",
+                    "example_values": [
+                        "dismissed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.riskDetail",
+                    "data_type": "string",
+                    "example_values": [
+                        "adminDismissedAllRiskForUser"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.isProcessing",
+                    "data_type": "numeric",
+                    "example_values": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.userDisplayName",
+                    "data_type": "string",
+                    "example_values": [
+                        "Ian Wills"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.userPrincipalName",
+                    "data_type": "string",
+                    "example_values": [
+                        "iwills@tlp5x.onmicrosoft.com"
+                    ],
+                    "contains": [
+                        "email"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.riskLastUpdatedDateTime",
+                    "data_type": "string",
+                    "example_values": [
+                        "2024-06-05T17:33:50.0817259Z"
+                    ]
+                },
+                {
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success",
-                        "failed"
+                        "success"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Total risky users: 4"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.total_risky_users",
+                    "data_type": "numeric",
+                    "example_values": [
+                        4
                     ]
                 },
                 {
@@ -444,154 +567,6 @@
                     "data_type": "numeric",
                     "example_values": [
                         50
-                    ]
-                },
-                {
-                    "data_path": "action_result.parameter.filter",
-                    "data_type": "string",
-                    "example_values": [
-                        "status eq 'active'"
-                    ]
-                },
-                {
-                    "data_path": "action_result.parameter.orderby",
-                    "data_type": "string",
-                    "example_values": [
-                        "lastUpdateDateTime desc"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.assignedTo",
-                    "data_type": "string",
-                    "example_values": [
-                        "testuser@abc.com"
-                    ],
-                    "contains": [
-                        "email"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.userDisplayName",
-                    "data_type": "string",
-                    "example_values": [
-                        "unknown"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.comments.*.comment",
-                    "data_type": "string",
-                    "example_values": [
-                        "Testing comment"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.comments.*.createdByDisplayName",
-                    "data_type": "string",
-                    "example_values": [
-                        "testuser@abc.com"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.comments.*.createdDateTime",
-                    "data_type": "string",
-                    "example_values": [
-                        "2022-06-08T08:34:40.68416Z"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.createdDateTime",
-                    "data_type": "string",
-                    "example_values": [
-                        "2022-06-13T10:36:05.7Z"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.determination",
-                    "data_type": "string",
-                    "example_values": [
-                        "unknown"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.displayName",
-                    "data_type": "string",
-                    "example_values": [
-                        "Malware incident on one endpoint"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.id",
-                    "data_type": "string",
-                    "example_values": [
-                        "145"
-                    ],
-                    "contains": [
-                        "defender incident id"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.incidentWebUrl",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://test.com/incidents/45?tid=xxxxx670-d7ef-580d-a225-d48057e74df6"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.lastUpdateDateTime",
-                    "data_type": "string",
-                    "example_values": [
-                        "2022-06-13T12:57:22.3633333Z"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.redirectIncidentId",
-                    "data_type": "string",
-                    "example_values": [
-                        "48"
-                    ],
-                    "contains": [
-                        "defender incident id"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.severity",
-                    "data_type": "string",
-                    "example_values": [
-                        "high"
-                    ],
-                    "contains": [
-                        "defender severity"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "active"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.tenantId",
-                    "data_type": "string",
-                    "example_values": [
-                        "xxxxx670-d7ef-580d-a225-d48057e74df6"
-                    ]
-                },
-                {
-                    "data_path": "action_result.summary.total_incidents",
-                    "data_type": "numeric",
-                    "example_values": [
-                        50
-                    ]
-                },
-                {
-                    "data_path": "action_result.message",
-                    "data_type": "string",
-                    "example_values": [
-                        "Total incidents: 50"
                     ]
                 },
                 {
@@ -626,24 +601,24 @@
             "read_only": true,
             "parameters": {
                 "limit": {
-                    "description": "Maximum number of incidents to return (Defaults to 50)",
+                    "description": "Maximum number of devices to return (Defaults to 50)",
                     "data_type": "numeric",
                     "default": 50,
                     "order": 0
                 },
                 "offset": {
-                    "description": "Number of incidents to skip (Defaults to 0)",
+                    "description": "Number of devices to skip (Defaults to 0)",
                     "data_type": "numeric",
                     "default": 0,
                     "order": 1
                 },
                 "filter": {
-                    "description": "Filter incidents based on property",
+                    "description": "Filter devices based on property",
                     "data_type": "string",
                     "order": 2
                 },
                 "orderby": {
-                    "description": "Sort the incidents based on property",
+                    "description": "Sort the devices based on property",
                     "data_type": "string",
                     "order": 3
                 }
@@ -653,8 +628,8 @@
                 "type": "custom",
                 "width": 10,
                 "height": 5,
-                "view": "msgraphforentra_view.display_incidents",
-                "title": "List Incidents"
+                "view": "msgraphforentra_view.display_devices",
+                "title": "List Devices"
             },
             "versions": "EQ(*)"
         },
