@@ -57,6 +57,11 @@ def display_alerts(provides, all_app_runs, context):
     return "msgraphforentra_list_alerts.html"
 
 
+def display_signins(provides, all_app_runs, context):
+    add_results_to_context(all_app_runs, context)
+    return "msgraphforentra_list_signins.html"
+
+
 def update_alert(provides, all_app_runs, context):
     add_results_to_context(all_app_runs, context)
     return "msgraphforentra_update_alert.html"

@@ -646,15 +646,27 @@
                     "default": 50,
                     "order": 0
                 },
+                "filter_start_datetime": {
+                    "description": "Start time to filter sigins by. Format can be YYYY-MM-DD or YYYY-MM-DDThh:mm:ssZ",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 1
+                },
+                "filter_end_datetime": {
+                    "description": "End time to filter sigins by. Format can be YYYY-MM-DD or YYYY-MM-DDThh:mm:ssZ",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 2
+                },
                 "filter": {
                     "description": "Filter signins based on property",
                     "data_type": "string",
-                    "order": 2
+                    "order": 3
                 },
                 "orderby": {
                     "description": "Sort the signins based on property",
                     "data_type": "string",
-                    "order": 3
+                    "order": 4
                 }
             },
             "output": [
@@ -662,42 +674,42 @@
                     "data_path": "action_result.data.*.id",
                     "data_type": "string",
                     "example_values": [
-                        "84175a65-3630-4b90-ae9c-26babb5f5c00"
+                        "32753854-58f3-40f2-bef7-ae9db94b1800"
                     ]
                 },
                 {
                     "data_path": "action_result.data.*.appId",
                     "data_type": "string",
                     "example_values": [
-                        "10fa57ef-4895-4ab2-872c-8c3613d4f7fb"
+                        "c44b4083-3bb0-49c1-b47d-974e53cbdf3c"
                     ]
                 },
                 {
                     "data_path": "action_result.data.*.status.errorCode",
                     "data_type": "numeric",
                     "example_values": [
-                        50055
+                        0
                     ]
                 },
                 {
                     "data_path": "action_result.data.*.status.failureReason",
                     "data_type": "string",
                     "example_values": [
-                        "The password is expired."
+                        "Other."
                     ]
                 },
                 {
                     "data_path": "action_result.data.*.status.additionalDetails",
                     "data_type": "string",
                     "example_values": [
-                        "The user's password is expired, and therefore their login or session was ended. They will be offered the opportunity to reset it, or may ask an admin to reset it via https://learn.microsoft.com/entra/fundamentals/users-reset-password-azure-portal"
+                        "MFA requirement satisfied by claim in the token"
                     ]
                 },
                 {
                     "data_path": "action_result.data.*.userId",
                     "data_type": "string",
                     "example_values": [
-                        "f7324b83-3423-4608-b146-9316d4d62dd9"
+                        "a75e9d70-b67e-42f7-bbd3-8c586e4b8d2e"
                     ]
                 },
                 {
@@ -743,7 +755,7 @@
                     "data_path": "action_result.data.*.ipAddress",
                     "data_type": "string",
                     "example_values": [
-                        "216.147.121.118"
+                        "216.147.121.134"
                     ],
                     "contains": [
                         "ip"
@@ -760,7 +772,7 @@
                     "data_path": "action_result.data.*.resourceId",
                     "data_type": "string",
                     "example_values": [
-                        "00000003-0000-0000-c000-000000000000"
+                        "c44b4083-3bb0-49c1-b47d-974e53cbdf3c"
                     ]
                 },
                 {
@@ -774,7 +786,7 @@
                     "data_path": "action_result.data.*.deviceDetail.browser",
                     "data_type": "string",
                     "example_values": [
-                        "Firefox 128.0"
+                        "Chrome 131.0.0"
                     ]
                 },
                 {
@@ -830,7 +842,7 @@
                     "data_path": "action_result.data.*.correlationId",
                     "data_type": "string",
                     "example_values": [
-                        "feae46bf-55cc-4766-b636-53726256b138"
+                        "aca6d53e-4b3b-49a3-a505-3eca2fab8f49"
                     ]
                 },
                 {
@@ -844,28 +856,28 @@
                     "data_path": "action_result.data.*.appDisplayName",
                     "data_type": "string",
                     "example_values": [
-                        "Cascade Authentication"
+                        "Azure Portal"
                     ]
                 },
                 {
                     "data_path": "action_result.data.*.createdDateTime",
                     "data_type": "string",
                     "example_values": [
-                        "2024-08-26T17:00:58Z"
+                        "2025-01-28T12:40:41Z"
                     ]
                 },
                 {
                     "data_path": "action_result.data.*.userDisplayName",
                     "data_type": "string",
                     "example_values": [
-                        "Grady Archie"
+                        "Ian Wills"
                     ]
                 },
                 {
                     "data_path": "action_result.data.*.userPrincipalName",
                     "data_type": "string",
                     "example_values": [
-                        "gradya@tlp5x.onmicrosoft.com"
+                        "iwills@tlp5x.onmicrosoft.com"
                     ],
                     "contains": [
                         "email"
@@ -875,7 +887,7 @@
                     "data_path": "action_result.data.*.resourceDisplayName",
                     "data_type": "string",
                     "example_values": [
-                        "Microsoft Graph"
+                        "Azure Portal"
                     ]
                 },
                 {
@@ -900,20 +912,6 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.riskEventTypes",
-                    "data_type": "string",
-                    "example_values": [
-                        "anonymizedIPAddress"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.riskEventTypes_v2",
-                    "data_type": "string",
-                    "example_values": [
-                        "anonymizedIPAddress"
-                    ]
-                },
-                {
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
@@ -924,35 +922,42 @@
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
-                        "Total signins: 8"
+                        "Total signins: 1"
                     ]
                 },
                 {
                     "data_path": "action_result.summary.total_signins",
                     "data_type": "numeric",
                     "example_values": [
-                        8
+                        1
                     ]
                 },
                 {
                     "data_path": "action_result.parameter.limit",
                     "data_type": "numeric",
                     "example_values": [
-                        50
+                        1
                     ]
                 },
                 {
                     "data_path": "action_result.parameter.filter",
                     "data_type": "string",
                     "example_values": [
-                        "userPrincipalName eq 'gradya@tlp5x.onmicrosoft.com' and createdDateTime ge 2024-08-01T00:00:00Z and createdDateTime le 2024-09-14T23:59:59Z"
+                        "userDisplayName eq 'Ian Wills'"
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.orderby",
+                    "data_path": "action_result.parameter.filter_end_datetime",
                     "data_type": "string",
                     "example_values": [
-                        "createdDateTime"
+                        "2025-01-30"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.filter_start_datetime",
+                    "data_type": "string",
+                    "example_values": [
+                        "2025-01-26"
                     ]
                 },
                 {
@@ -974,8 +979,8 @@
                 "type": "custom",
                 "width": 10,
                 "height": 5,
-                "view": "msgraphforentra_view.display_incidents",
-                "title": "List Incidents"
+                "view": "msgraphforentra_view.display_signins",
+                "title": "List Signins"
             },
             "versions": "EQ(*)"
         }

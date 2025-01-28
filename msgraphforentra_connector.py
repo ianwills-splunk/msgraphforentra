@@ -1154,6 +1154,16 @@ class MsGraphForEntra_Connector(BaseConnector):
         page_size = consts.MSGENTRA_INGESTION_DEFAULT_PAGE_SIZE
         filter = param.get(consts.MSGENTRA_INCIDENT_FILTER)
         orderby = param.get(consts.MSGENTRA_INCIDENT_ORDER_BY)
+        # Filtering on time is mandatory otherwise this API call will time out
+        filter_start_datetime = param[consts.MSGENTRA_FILTER_START_DATETIME]
+        filter_end_datetime = param[consts.MSGENTRA_FILTER_END_DATETIME]
+
+        # Build filter
+        datetime_filter = f"createdDateTime ge {filter_start_datetime} and createdDateTime le {filter_end_datetime}"
+        if filter is None:
+            filter = datetime_filter
+        else:
+            filter = f"{datetime_filter} and {filter}"
 
         ret_val, limit = self._validate_integer(action_result, limit, consts.MSGENTRA_LIMIT_KEY, allow_zero=False)
         if phantom.is_fail(ret_val):
