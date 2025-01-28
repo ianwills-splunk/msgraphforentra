@@ -983,6 +983,317 @@
                 "title": "List Signins"
             },
             "versions": "EQ(*)"
+        },
+        {
+            "action": "get signin",
+            "description": "Get user signin",
+            "type": "investigate",
+            "identifier": "get_signin",
+            "read_only": true,
+            "parameters": {
+                "signin_id": {
+                    "description": "Signin ID",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 0
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "32753854-58f3-40f2-bef7-ae9db94b1800"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.appId",
+                    "data_type": "string",
+                    "example_values": [
+                        "c44b4083-3bb0-49c1-b47d-974e53cbdf3c"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.status.errorCode",
+                    "data_type": "numeric",
+                    "example_values": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.status.failureReason",
+                    "data_type": "string",
+                    "example_values": [
+                        "Other."
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.status.additionalDetails",
+                    "data_type": "string",
+                    "example_values": [
+                        "MFA requirement satisfied by claim in the token"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.userId",
+                    "data_type": "string",
+                    "example_values": [
+                        "a75e9d70-b67e-42f7-bbd3-8c586e4b8d2e"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.location.city",
+                    "data_type": "string",
+                    "example_values": [
+                        "Denver"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.location.state",
+                    "data_type": "string",
+                    "example_values": [
+                        "Colorado"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.location.geoCoordinates.altitude",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.location.geoCoordinates.latitude",
+                    "data_type": "numeric",
+                    "example_values": [
+                        39.74249
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.location.geoCoordinates.longitude",
+                    "data_type": "numeric",
+                    "example_values": [
+                        -104.9856
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.location.countryOrRegion",
+                    "data_type": "string",
+                    "example_values": [
+                        "US"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.ipAddress",
+                    "data_type": "string",
+                    "example_values": [
+                        "216.147.121.134"
+                    ],
+                    "contains": [
+                        "ip"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.riskState",
+                    "data_type": "string",
+                    "example_values": [
+                        "none"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.resourceId",
+                    "data_type": "string",
+                    "example_values": [
+                        "c44b4083-3bb0-49c1-b47d-974e53cbdf3c"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.riskDetail",
+                    "data_type": "string",
+                    "example_values": [
+                        "none"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.deviceDetail.browser",
+                    "data_type": "string",
+                    "example_values": [
+                        "Chrome 131.0.0"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.deviceDetail.deviceId",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.deviceDetail.isManaged",
+                    "data_type": "numeric",
+                    "example_values": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.deviceDetail.trustType",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.deviceDetail.displayName",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.deviceDetail.isCompliant",
+                    "data_type": "numeric",
+                    "example_values": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.deviceDetail.operatingSystem",
+                    "data_type": "string",
+                    "example_values": [
+                        "MacOs"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.clientAppUsed",
+                    "data_type": "string",
+                    "example_values": [
+                        "Browser"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.correlationId",
+                    "data_type": "string",
+                    "example_values": [
+                        "aca6d53e-4b3b-49a3-a505-3eca2fab8f49"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.isInteractive",
+                    "data_type": "numeric",
+                    "example_values": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.@odata.context",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://graph.microsoft.com/v1.0/$metadata#auditLogs/signIns/$entity"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.appDisplayName",
+                    "data_type": "string",
+                    "example_values": [
+                        "Azure Portal"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.createdDateTime",
+                    "data_type": "string",
+                    "example_values": [
+                        "2025-01-28T12:40:41Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.userDisplayName",
+                    "data_type": "string",
+                    "example_values": [
+                        "Ian Wills"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.userPrincipalName",
+                    "data_type": "string",
+                    "example_values": [
+                        "iwills@tlp5x.onmicrosoft.com"
+                    ],
+                    "contains": [
+                        "email"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.resourceDisplayName",
+                    "data_type": "string",
+                    "example_values": [
+                        "Azure Portal"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.riskLevelAggregated",
+                    "data_type": "string",
+                    "example_values": [
+                        "none"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.riskLevelDuringSignIn",
+                    "data_type": "string",
+                    "example_values": [
+                        "none"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.conditionalAccessStatus",
+                    "data_type": "string",
+                    "example_values": [
+                        "notApplied"
+                    ]
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.signin_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "32753854-58f3-40f2-bef7-ae9db94b1800"
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "render": {
+                "type": "custom",
+                "width": 10,
+                "height": 5,
+                "view": "msgraphforentra_view.display_signins",
+                "title": "List Signins"
+            },
+            "versions": "EQ(*)"
         }
     ],
     "pip_dependencies": {

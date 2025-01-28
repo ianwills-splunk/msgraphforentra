@@ -1184,6 +1184,35 @@ class MsGraphForEntra_Connector(BaseConnector):
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
+    def _handle_get_signin(self, param):
+        """This function is used to handle the get signin action.
+
+        :param param: Dictionary of input parameters
+        :return: status(phantom.APP_SUCCESS/phantom.APP_ERROR)
+        """
+
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        signin_id = param[consts.MSGENTRA_SIGNIN_ID]
+
+        endpoint = f"{consts.MSGENTRA_MSGRAPH_API_BASE_URL}{consts.MSGENTRA_GET_SIGNIN_ENDPOINT}/{signin_id}"
+
+        # For some strange reason, even though the endpoint is specifying a unique object by ID,
+        # it will fail with 403 gateway timeout unless you specify a "top" and "limit" of 1.
+        params = {"$top": 1, "$limit": 1}
+
+        ret_val, signin = self._update_request(action_result=action_result, endpoint=endpoint, params=params)
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        if not signin and not isinstance(signin, list):
+            return action_result.get_status()
+
+        action_result.add_data(signin)
+
+        return action_result.set_status(phantom.APP_SUCCESS)
+
     def _handle_list_devices(self, param):
         """This function is used to handle the list devices action.
 
@@ -1486,6 +1515,8 @@ class MsGraphForEntra_Connector(BaseConnector):
             ret_val = self._handle_list_risky_users(param)
         elif action_id == "list_signins":
             ret_val = self._handle_list_signins(param)
+        elif action_id == "get_signin":
+            ret_val = self._handle_get_signin(param)
         elif action_id == "dismiss_users_risk":
             ret_val = self._handle_dismiss_users_risk(param)
         elif action_id == "list_devices":
