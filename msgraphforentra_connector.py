@@ -697,7 +697,7 @@ class MsGraphForEntra_Connector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, "Asset Name for id: {0} not found.".format(asset_id), None)
         return phantom.APP_SUCCESS, asset_name
 
-    def _get_phantom_base_url_defender(self, action_result):
+    def _get_phantom_base_url_entra(self, action_result):
         """Get base url of phantom.
 
         :param action_result: object of ActionResult class
@@ -723,7 +723,7 @@ class MsGraphForEntra_Connector(BaseConnector):
         URL to make rest calls
         """
 
-        ret_val, soar_base_url = self._get_phantom_base_url_defender(action_result)
+        ret_val, soar_base_url = self._get_phantom_base_url_entra(action_result)
         if phantom.is_fail(ret_val):
             return action_result.get_status(), None
 

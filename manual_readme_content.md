@@ -1,6 +1,6 @@
 [comment]: # " File: README.md"
 [comment]: # ""
-[comment]: # "Copyright (c) 2022-2024 Splunk Inc."
+[comment]: # "Copyright (c) 2022-2025 Splunk Inc."
 [comment]: # ""
 [comment]: # "Licensed under the Apache License, Version 2.0 (the 'License');"
 [comment]: # "you may not use this file except in compliance with the License."
@@ -39,16 +39,15 @@ are the default ports used by Splunk SOAR.
 
 ## Explanation of Asset Configuration Parameters for On Poll
 
--   Max Incidents For Polling - In each polling cycle, incidents are fetched for schedule and interval polling based on the provided value (Default 1000). Containers are created per incident.
--   Start Time - It is used to filter the incidents based on start time, if nothing is provided, then it will take last week as start time. <br> **NOTE: Start time is used to filter based on lastUpdateDateTime property of incident**
--   Filter - It is used to add extra filters on incident properties.
+-   Maximum risk detections/risky users for scheduled/interval polling for each cycle - In each polling cycle, risk detections and risky users are fetched for schedule and interval polling based on the provided value (Default 500). Containers are created per risk detection and per risky user.
+-   Start time for schedule/interval/manual poll (Use this format: 1970-01-01T00:00:00Z) - It is used to filter the risk detections and risky users based on start time, if nothing is provided, then it will take last week as start time. <br> **NOTE: Start time is used to filter based on riskLastUpdatedDateTime property of risky user and lastUpdatedDateTime of risk detection**
+-   Filter risk detections based on property (example: status ne 'active') - It is used to add extra filters on risk detection properties.
+-   Filter risky users based on property (example: status ne 'active') - It is used to add extra filters on risky user properties.
 
 ## Explanation of On Poll Behavior
 
--    The default incident order is set to "lastUpdateDateTime," prioritizing the latest incidents as newest.
--    The start time parameter value aligns with the lastUpdateDateTime of the incident. 
--    The maximum incidents parameter functions exclusively with scheduled and interval polling.
--    For Example,if the maximum incident parameter is set to 100, the 'on_poll' feature must incorporate up to 100 distinct incidents, based on the provided filter and start time parameter value.
+-    The "Maximum risk detections/risk users for scheduled/interval polling for each cycle" parameter functions exclusively with scheduled and interval polling.
+-    For Example,if the "Maximum risk detections/risk users for scheduled/interval polling for each cycle" parameter is set to 100, the 'on_poll' feature must incorporate up to 100 distinct risk detections or risky users, based on the provided filters and start times parameter values.
 
 
 ## Configure and set up permissions of the app created on the Microsoft Azure portal
@@ -73,16 +72,20 @@ are the default ports used by Splunk SOAR.
 11. Provide the following Delegated and Application permissions to the app.
     -   **Application Permissions**
 
-        -   SecurityAlert.Read.All
-        -   SecurityAlert.ReadWrite.All
-        -   ThreatHunting.Read.All
-        -   SecurityIncident.Read.All
+        -   IdentityRiskEvent.Read.All  (for "list risk detections")
+        -   IdentityRiskyUser.Read.All  (for "list risky users")
+        -   IdentityRiskyUser.ReadWrite.All  (for "dismiss users risk")
+        -   AuditLog.Read.All  (for "list sigins")
+        -   Directory.Read.All  (for "list sigins")
+        -   Device.Read.All  (for "list devices")
     -   **Delegated Permissions**
 
-        -   SecurityAlert.Read.All
-        -   SecurityAlert.ReadWrite.All
-        -   ThreatHunting.Read.All
-        -   SecurityIncident.Read.All
+        -   IdentityRiskEvent.Read.All  (for "list risk detections")
+        -   IdentityRiskyUser.Read.All  (for "list risky users")
+        -   IdentityRiskyUser.ReadWrite.All  (for "dismiss users risk")
+        -   AuditLog.Read.All  (for "list sigins")
+        -   Directory.Read.All  (for "list sigins")
+        -   Device.Read.All  (for "list devices")
 12. 'Grant Admin Consent' for it.
 13. Again click on 'Add a permission'.
 14. Under the 'Select an API' section, select 'Microsoft APIs'.
@@ -115,7 +118,7 @@ are the default ports used by Splunk SOAR.
 
 
 
-## Configure the Microsoft 365 Defender SOAR app's asset
+## Configure the MS Graph for Entra SOAR app's asset
 
 When creating an asset for the app,
 
@@ -139,11 +142,11 @@ When creating an asset for the app,
 -   Save the asset with the above values.
 
 -   After saving the asset, a new uneditable field will appear in the 'Asset Settings' tab of the
-    configured asset for the Microsoft 365 Defender app on SOAR. Copy the URL mentioned in the 'POST
-    incoming for Microsoft 365 Defender to this location' field. Add a suffix '/result' to the URL
+    configured asset for the MS Graph for Entra app on SOAR. Copy the URL mentioned in the 'POST
+    incoming for MS Graph for Entra to this location' field. Add a suffix '/result' to the URL
     copied in the previous step. The resulting URL looks like the one mentioned below.
 
-    https://\<soar_host>/rest/handler/microsoft365defender\_\<appid>/\<asset_name>/result
+    https://\<soar_host>/rest/handler/msgraphforentra\_\<appid>/\<asset_name>/result
 
 -   Add the URL created in the earlier step into the 'Redirect URIs' section of the 'Authentication'
     menu for the registered app that was created in the previous steps on the Microsoft Azure
@@ -169,7 +172,7 @@ When creating an asset for the app,
     that pop-up window.
 -   Open this URL in a separate browser tab. This new tab will redirect to the Microsoft login page
     to complete the login process to grant the permissions to the app.
--   Log in using the same Microsoft account that was used to configure the Microsoft 365 Defender
+-   Log in using the same Microsoft account that was used to configure the Microsoft Entra
     workflow and the application on the Microsoft Azure Portal. After logging in, review the
     requested permissions listed and click on the 'Accept' button.
 -   This will display a successful message of 'Code received. Please close this window, the action
@@ -188,7 +191,7 @@ When creating an asset for the app,
 -   This app uses (version 1.0) OAUTH 2.0 authorization code workflow APIs for generating the
     \[access_token\] and \[refresh_token\] pairs if the authentication method is interactive else
     \[access_token\] if authentication method is non-interactive is used for all the API calls to
-    the Microsoft 365 Defender instance.
+    the Microsoft Entra instance.
 
 -   Interactive authentication mechanism is a user-context based workflow and the permissions of the
     user also matter along with the API permissions set to define the scope and permissions of the
@@ -205,7 +208,7 @@ When creating an asset for the app,
     -   The first step is to get an application created in a specific tenant on the Microsoft Entra ID. Generate the \[client_secret\] for the configured application. The
         detailed steps have been mentioned in the earlier section.
 
-    -   Configure the Microsoft 365 Defender app's asset with appropriate values for \[tenant_id\],
+    -   Configure the MS Graph for Entra app's asset with appropriate values for \[tenant_id\],
         \[client_id\], and \[client_secret\] configuration parameters.
 
     -   Run the test connectivity action for Interactive method.
@@ -232,7 +235,7 @@ When creating an asset for the app,
         -   The successful run of the Test Connectivity ensures that a valid pair of
             \[access_token\] and \[refresh_token\] has been generated and stored in the app's state
             file. These tokens will be used in all the actions' execution flow to authorize their
-            API calls to the Microsoft 365 Defender instance.
+            API calls to the Microsoft Entra instance.
 
     -   Run the test connectivity action for Non-Interactive method.
 
@@ -247,7 +250,7 @@ When creating an asset for the app,
             \[access_token\] by making the corresponding API call.
         -   The successful run of the Test Connectivity ensures that a valid \[access_token\] has
             been generated and stored in the app's state file. This token will be used in all the
-            actions execution flow to authorize their API calls to the Microsoft 365 Defender
+            actions execution flow to authorize their API calls to the Microsoft Entra
             instance.
 
 ## State file permissions
@@ -267,9 +270,9 @@ Please check the permissions for the state file as mentioned below.
 ## Notes
 
 -   \<appid> - The app ID will be available in the Redirect URI which gets populated in the field
-    'POST incoming for Microsoft 365 Defender to this location' when the Microsoft 365 Defender app
+    'POST incoming for MS Graph for Entra to this location' when the MS Graph for Entra app
     asset is configured e.g.
-    https://\<splunk_soar_host>/rest/handler/microsoft365defender\_\<appid>/\<asset_name>/result
+    https://\<splunk_soar_host>/rest/handler/msgraphforentra\_\<appid>/\<asset_name>/result
 -   \<asset_id> - The asset ID will be available on the created asset's Splunk SOAR web URL e.g.
     https://\<splunk_soar_host>/apps/\<app_number>/asset/\<asset_id>/
 

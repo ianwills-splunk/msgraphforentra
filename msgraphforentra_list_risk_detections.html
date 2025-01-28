@@ -9,7 +9,7 @@
 
 {% block widget_content %} <!-- Main Start Block -->
 
-<!-- File: msgraphforentra_list_incidents.html
+<!-- File: msgraphforentra_list_risk_detections.html
   Copyright (c) 2022-2025 Splunk Inc.
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -25,30 +25,30 @@
 
 <style>
 
-    .microsoftdefender a:hover {
+    .microsoftentra a:hover {
         text-decoration:underline;
     }
 
-    .microsoftdefender .wf-table-vertical {
+    .microsoftentra .wf-table-vertical {
     width: initial;
     font-size: 12px;
     }
 
-    .microsoftdefender .wf-table-vertical td{
+    .microsoftentra .wf-table-vertical td{
     padding: 8px 10px;
     border: 1px solid;
     }
 
-    .microsoftdefender .wf-table-vertical tr td:first-child {
+    .microsoftentra .wf-table-vertical tr td:first-child {
     font-weight: bold;
     }
 
-    .microsoftdefender .wf-table-horizontal {
+    .microsoftentra .wf-table-horizontal {
         border: 1px solid;
         font-size: 12px;
     }
 
-    .microsoftdefender .wf-table-horizontal th {
+    .microsoftentra .wf-table-horizontal th {
         text-align: center;
         border: 1px solid;
         text-transform: uppercase;
@@ -56,42 +56,42 @@
         padding: 5px;
     }
 
-    .microsoftdefender .wf-table-horizontal td {
+    .microsoftentra .wf-table-horizontal td {
         border: 1px solid;
         padding: 5px;
         padding-left: 4px;
     }
 
-    .microsoftdefender .wf-h3-style {
+    .microsoftentra .wf-h3-style {
         font-size : 20px
     }
 
-    .microsoftdefender .wf-h4-style {
+    .microsoftentra .wf-h4-style {
         font-size : 16px
     }
 
-    .microsoftdefender .collapse.in {
+    .microsoftentra .collapse.in {
         display: block !important;
     }
 
-    .microsoftdefender .panel-collapse {
+    .microsoftentra .panel-collapse {
         overflow-x: auto;
     }
 
-    .microsoftdefender .glyphicon.glyphicon-dot:before {
+    .microsoftentra .glyphicon.glyphicon-dot:before {
         content: "\25cf"; font-size: 10px;
     }
 
-    .microsoftdefender a.nowrap {
+    .microsoftentra a.nowrap {
         white-space:nowrap;
     }
 
-    .microsoftdefendernowrap {
+    .microsoftentranowrap {
         white-space:nowrap;
     }
 
 </style>
-<div class="microsoftdefender" style="overflow: auto; width: 100%; height: 100%; padding-left:10px; padding-right:10px"> <!-- Main Div -->
+<div class="microsoftentra" style="overflow: auto; width: 100%; height: 100%; padding-left:10px; padding-right:10px"> <!-- Main Div -->
     {% for result in results %} <!-- loop for each result -->
     <br>
 
@@ -103,7 +103,7 @@
         <h3 class="wf-h3-style">Risk Event Info</h3>
         <div class="metadata_div">
             <!--Default View-->
-            <div class="panel-group" id="server-information">
+            <div class="panel-group" id="risk-event-information">
                 <div class="panel">
                     <div id="default-view-table" class="panel-collapse collapse in">
                         <table class="wf-table-horizontal datatable">
@@ -119,13 +119,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for incident in result.data %}
+                                {% for riskevent in result.data %}
                                     <tr>
-                                        {% if incident.id %}
-                                            <td class="microsoftdefendernowrap">
+                                        <td>{{ riskevent.id | default:"None" }}</td>
+                                        <td>{{ riskevent.userDisplayName | default:"None" }}</td>
+                                        {% if riskevent.ipAddress %}
+                                            <td class="microsoftentranowrap">
                                                 <a href="javascript:;"
-                                                onclick="context_menu(this, [{'contains': ['defender incident id'], 'value': '{{ incident.id }}' }], 0, {{ container.id }}, null, false);">
-                                                    {{ incident.id }}
+                                                onclick="context_menu(this, [{'contains': ['ip'], 'value': '{{ riskevent.ipAddress }}' }], 0, {{ container.id }}, null, false);">
+                                                    {{ riskevent.ipAddress }}
                                                     &nbsp;
                                                     <span class="fa fa-caret-down" style="font-size: smaller;"></span>
                                                 </a>
@@ -133,24 +135,10 @@
                                         {% else %}
                                             <td>None</td>
                                         {% endif %}
-                                        <td>{{ incident.userDisplayName | default:"None" }}</td>
-                                        <td>{{ incident.ipAddress | default:"None" }}</td>
-                                        <td>{{ incident.location.countryOrRegion | default:"None" }}</td>
-                                        <td>{{ incident.riskEventType | default:"None" }}</td>
-                                        <td>{{ incident.riskState | default:"None" }}</td>
-                                        <td>{{ incident.riskLevel | default:"None" }}</td>
-                                        <!-- {% if incident.assignedTo %}
-                                            <td class="microsoftdefendernowrap">
-                                                <a href="javascript:;"
-                                                onclick="context_menu(this, [{'contains': ['email'], 'value': '{{ incident.assignedTo }}' }], 0, {{ container.id }}, null, false);">
-                                                    {{ incident.assignedTo }}
-                                                    &nbsp;
-                                                    <span class="fa fa-caret-down" style="font-size: smaller;"></span>
-                                                </a>
-                                            </td>
-                                        {% else %}
-                                            <td>None</td> -->
-                                        {% endif %}
+                                        <td>{{ riskevent.location.countryOrRegion | default:"None" }}</td>
+                                        <td>{{ riskevent.riskEventType | default:"None" }}</td>
+                                        <td>{{ riskevent.riskState | default:"None" }}</td>
+                                        <td>{{ riskevent.riskLevel | default:"None" }}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>

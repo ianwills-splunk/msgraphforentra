@@ -123,7 +123,18 @@
                                 {% for signin in result.data %}
                                     <tr>
                                         <td>{{ signin.createdDateTime | default:"None" }}</td>
-                                        <td>{{ signin.id | default:"None" }}</td>
+                                        {% if signin.id %}
+                                            <td class="microsoftentranowrap">
+                                                <a href="javascript:;"
+                                                onclick="context_menu(this, [{'contains': ['entra signin id'], 'value': '{{ signin.id }}' }], 0, {{ container.id }}, null, false);">
+                                                    {{ signin.id }}
+                                                    &nbsp;
+                                                    <span class="fa fa-caret-down" style="font-size: smaller;"></span>
+                                                </a>
+                                            </td>
+                                        {% else %}
+                                            <td>None</td>
+                                        {% endif %}
                                         <td>{{ signin.userDisplayName | default:"None" }}</td>
                                         <td>{{ signin.appDisplayName | default:"None" }}</td>
                                         {% if signin.status.errorCode == 0 %}
@@ -131,7 +142,18 @@
                                         {% else %}
                                             <td>Failure</td>
                                         {% endif %}
-                                        <td>{{ signin.ipAddress | default:"None" }}</td>
+                                        {% if signin.ipAddress %}
+                                            <td class="microsoftentranowrap">
+                                                <a href="javascript:;"
+                                                onclick="context_menu(this, [{'contains': ['ip'], 'value': '{{ signin.ipAddress }}' }], 0, {{ container.id }}, null, false);">
+                                                    {{ signin.ipAddress }}
+                                                    &nbsp;
+                                                    <span class="fa fa-caret-down" style="font-size: smaller;"></span>
+                                                </a>
+                                            </td>
+                                        {% else %}
+                                            <td>None</td>
+                                        {% endif %}
                                         <td>{{ signin.location.city | default:"None" }}, {{ signin.location.state | default:"None" }}</td>
                                         <td>{{ signin.conditionalAccessStatus | default:"None" }}</td>
                                     </tr>

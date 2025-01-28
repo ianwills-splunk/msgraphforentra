@@ -675,6 +675,9 @@
                     "data_type": "string",
                     "example_values": [
                         "32753854-58f3-40f2-bef7-ae9db94b1800"
+                    ],
+                    "contains": [
+                        "entra signin id"
                     ]
                 },
                 {
@@ -995,6 +998,10 @@
                     "description": "Signin ID",
                     "data_type": "string",
                     "required": true,
+                    "primary": true,
+                    "contains": [
+                        "entra signin id"
+                    ],
                     "order": 0
                 }
             },
