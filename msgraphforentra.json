@@ -16,7 +16,7 @@
         }
     ],
     "license": "Copyright (c) 2022-2025 Splunk Inc.",
-    "app_version": "1.0.0",
+    "app_version": "1.0.2",
     "utctime_updated": "2024-12-17T19:23:33.000000Z",
     "package_name": "phantom_msgraphforentra",
     "main_module": "msgraphforentra_connector.py",
@@ -1309,24 +1309,8 @@
     "pip39_dependencies": {
         "wheel": [
             {
-                "module": "PyJWT",
-                "input_file": "wheels/py3/PyJWT-2.10.1-py3-none-any.whl"
-            },
-            {
-                "module": "cffi",
-                "input_file": "wheels/py39/cffi-1.17.1-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
-            },
-            {
-                "module": "cryptography",
-                "input_file": "wheels/py39/cryptography-44.0.0-cp39-abi3-manylinux_2_28_x86_64.whl"
-            },
-            {
                 "module": "msal",
                 "input_file": "wheels/py3/msal-1.31.0-py3-none-any.whl"
-            },
-            {
-                "module": "pycparser",
-                "input_file": "wheels/py3/pycparser-2.22-py3-none-any.whl"
             }
         ]
     }

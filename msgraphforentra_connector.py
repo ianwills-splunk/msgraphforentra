@@ -24,6 +24,8 @@ import re
 import time
 from datetime import datetime, timedelta
 from urllib.parse import quote, urlencode
+import hashlib
+import traceback
 
 import encryption_helper
 import msal
@@ -259,6 +261,11 @@ def _get_dir_name_from_app_name(app_name):
     if not app_name:
         app_name = "app_for_phantom"
     return app_name
+
+
+def hash_values_sha256(values):
+    all_values = b''.join(str(v).encode('utf-8') for v in values)
+    return hashlib.sha256(all_values).hexdigest()
 
 
 class RetVal(tuple):
@@ -573,7 +580,7 @@ class MsGraphForEntra_Connector(BaseConnector):
                 "resource": consts.MSGENTRA_RESOURCE_URL,
             }
 
-        if not self._access_token:
+        if not self._access_token and not self._cba_auth:
             if self._non_interactive:
                 status = self._generate_new_access_token(action_result=action_result, data=token_data)
 
@@ -606,6 +613,7 @@ class MsGraphForEntra_Connector(BaseConnector):
 
         # If token is expired, generate new token
         if consts.MSGENTRA_TOKEN_EXPIRED in action_result.get_message():
+            self.debug_print('***** EXPIRED TOKEN')
             # Token is invalid, so set it to None to regenerate
             self._access_token = None
             status = self._generate_new_access_token(action_result=action_result, data=token_data)
@@ -619,6 +627,8 @@ class MsGraphForEntra_Connector(BaseConnector):
             ret_val, resp_json = self._make_rest_call(
                 action_result=action_result, endpoint=endpoint, headers=headers, params=params, data=data, method=method
             )
+        else:
+            self.debug_print('***** TOKEN WAS NOT EXPIRED')
 
         if phantom.is_fail(ret_val):
             return action_result.get_status(), None
@@ -781,7 +791,9 @@ class MsGraphForEntra_Connector(BaseConnector):
                 authority=authority,
                 client_credential={"thumbprint": self._certificate_thumbprint, "private_key": self._private_key},
             )
+            self.debug_print(f'Got app instance: {app}')
         except Exception as e:
+            self.debug_print(f'Exception from MSAL call: {e}')
             return (
                 action_result.set_status(
                     phantom.APP_ERROR,
@@ -791,14 +803,22 @@ class MsGraphForEntra_Connector(BaseConnector):
             )
 
         result = None
-        if self._access_token is None:
-            result = app.acquire_token_for_client(scopes=scope)
-            self._state = self.load_state()
-            self._access_token = result["access_token"]
-            self._state["access_token"] = result["access_token"]
-            # Save state
-            self.save_state(self._state)
-            self._state = self.load_state()
+        # Removing the check here, and just generating a new token
+        #if self._access_token is None:
+            
+        result = app.acquire_token_for_client(scopes=scope)
+        self.debug_print(f'Result from MSAL call: {result}')
+        self._state = self.load_state()
+        if result.get("access_token") is None:
+            self.debug_print(f'No access token, result is\n{result}')
+            return self.set_status(phantom.APP_ERROR), f'Return from MSAL api call {result}'
+        
+        self._access_token = result["access_token"]
+        self._state["access_token"] = result["access_token"]
+        # Save state
+        self.save_state(self._state)
+        self._state = self.load_state()
+
         return phantom.APP_SUCCESS
 
     def _generate_new_access_token(self, action_result, data):
@@ -809,10 +829,18 @@ class MsGraphForEntra_Connector(BaseConnector):
         :return: status phantom.APP_ERROR/phantom.APP_SUCCESS
         """
 
+        stack_list = traceback.format_stack()
+        self.debug_print(f'_generate_new_access_token traceback: {stack_list}')
         # If using Certificate Based Auth, call separate function to generate and return new access token
         if self._cba_auth is True:
             retval = self._generate_new_cba_access_token(action_result=action_result)
-            return retval
+            self.debug_print(f'retval from _generate_new_cba_access_token: {retval}')
+            if phantom.is_fail(retval):
+                self.debug_print(f'Failed to get token using CBA')
+                self.save_progress(f'Failed to get token using CBA')
+                return action_result.set_status(phantom.APP_ERROR, f'Failed to get token using CBA')
+            else:
+                return phantom.APP_SUCCESS
 
         req_url = "{}{}".format(consts.MSGENTRA_LOGIN_BASE_URL, consts.MSGENTRA_SERVER_TOKEN_URL.format(tenant_id=quote(self._tenant)))
 
@@ -907,6 +935,13 @@ class MsGraphForEntra_Connector(BaseConnector):
             if self._state.get(consts.MSGENTRA_CODE_STRING):
                 self._state.pop(consts.MSGENTRA_CODE_STRING)
 
+    def _nuke_tokens_from_state_file(self):
+
+            self.debug_print(f'Nuking access_token from state file')
+            if self._state.get(consts.MSGENTRA_ACCESS_TOKEN_STRING):
+                self._state.pop(consts.MSGENTRA_ACCESS_TOKEN_STRING)
+                self.save_state(self._state)
+
     def _handle_test_connectivity(self, param):
         """Testing of given credentials and obtaining authorization for all other actions.
 
@@ -919,6 +954,26 @@ class MsGraphForEntra_Connector(BaseConnector):
 
         if not self._state:
             self._state = {}
+
+        if self._cba_auth:
+            self.debug_print('In CBA Auth, running test connectivity')
+            # We already have a auth_token at this point
+            self.save_progress(consts.MSGENTRA_ALERTS_INFO_MSG)
+
+            url = "{}{}".format(consts.MSGENTRA_MSGRAPH_API_BASE_URL, consts.MSGENTRA_LIST_RISK_EVENTS_ENDPOINT)
+            params = {"$top": 1}  # page size of the result set
+
+            ret_val, message = self._update_request(action_result=action_result, endpoint=url, params=params)
+            if phantom.is_fail(ret_val):
+                self.send_progress("")
+                self._remove_tokens(action_result)
+                #self.save_progress(message)
+                self.save_progress(consts.MSGENTRA_TEST_CONNECTIVITY_FAILED_MSG)
+                return action_result.set_status(phantom.APP_ERROR, message)
+
+            self.save_progress(consts.MSGENTRA_RECEIVED_RISK_DETECTION_INFO_MSG)
+            self.save_progress(consts.MSGENTRA_TEST_CONNECTIVITY_PASSED_MSG)
+            return action_result.set_status(phantom.APP_SUCCESS)
 
         if not self._non_interactive:
             # Get initial REST URL
@@ -1547,6 +1602,24 @@ class MsGraphForEntra_Connector(BaseConnector):
         self._certificate_thumbprint = config.get(consts.MSGENTRA_CONFIG_CERTIFICATE_THUMBPRINT)
         self._certificate_private_key = config.get(consts.MSGENTRA_CONFIG_CERTIFICATE_PRIVATE_KEY)
 
+        # If any of these values are different between config and state, we will
+        # nuke the cached auth_token
+        self.critical_config_names = [
+            consts.MSGENTRA_CONFIG_TENANT_ID,
+            consts.MSGENTRA_CONFIG_CLIENT_ID,
+            consts.MSGENTRA_CONFIG_CLIENT_SECRET,
+            consts.MSGENTRA_CONFIG_CERTIFICATE_THUMBPRINT,
+            consts.MSGENTRA_CONFIG_CERTIFICATE_PRIVATE_KEY
+        ]
+
+        critical_fields = [config.get(x) for x in self.critical_config_names]
+        critical_hash = hash_values_sha256(critical_fields)
+
+        if self._state.get('critical_field_hash') != critical_hash:
+            # A critical field has changed in config, nuke the state file
+            self.debug_print(f'A critical config value changed, nuking state file')
+            self._nuke_tokens_from_state_file()      
+
         # Must either supply client_secret, or both thumbprint and private key
         if self._client_secret is None:
             if self._certificate_thumbprint is None or self._certificate_private_key is None:
@@ -1576,6 +1649,7 @@ class MsGraphForEntra_Connector(BaseConnector):
 
         self._access_token = self._state.get(consts.MSGENTRA_ACCESS_TOKEN_STRING, None)
         self._refresh_token = self._state.get(consts.MSGENTRA_REFRESH_TOKEN_STRING, None)
+        self.debug_print(f'Action id = {action_id}')
         if not self._non_interactive and action_id != "test_connectivity" and (not self._access_token or not self._refresh_token):
             token_data = {
                 "client_id": self._client_id,
@@ -1584,6 +1658,7 @@ class MsGraphForEntra_Connector(BaseConnector):
                 "client_secret": self._client_secret,
                 "resource": consts.MSGENTRA_RESOURCE_URL,
             }
+            self.debug_print('Calling generate_new_access_token from initialize')
             ret_val = self._generate_new_access_token(action_result=action_result, data=token_data)
 
             if phantom.is_fail(ret_val):
@@ -1593,7 +1668,15 @@ class MsGraphForEntra_Connector(BaseConnector):
 
     def finalize(self):
 
+        self.debug_print('In finalize()')
         # Save the state, this data is saved across actions and app upgrades
+
+        # Create hash of multiple fields, so if they are changed we can invalidate tokens
+        config = self.get_config()
+        critical_fields = [config.get(x) for x in self.critical_config_names]
+        critical_hash = hash_values_sha256(critical_fields)
+        self.debug_print(f'Critical field hash: {critical_hash}')
+        self._state['critical_field_hash'] = critical_hash
         self.save_state(self._state)
         return phantom.APP_SUCCESS
 
