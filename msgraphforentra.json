@@ -16,7 +16,7 @@
         }
     ],
     "license": "Copyright (c) 2022-2025 Splunk Inc.",
-    "app_version": "1.0.2",
+    "app_version": "1.0.3",
     "utctime_updated": "2024-12-17T19:23:33.000000Z",
     "package_name": "phantom_msgraphforentra",
     "main_module": "msgraphforentra_connector.py",
