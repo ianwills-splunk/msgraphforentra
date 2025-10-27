@@ -7,7 +7,7 @@
     "logo": "logo_msgraphforentra.svg",
     "logo_dark": "logo_msgraphforentra_dark.svg",
     "product_name": "Microsoft Entra",
-    "python_version": "3",
+    "python_version": "3.9, 3.13",
     "product_version_regex": ".*",
     "publisher": "Splunk",
     "contributors": [
@@ -179,6 +179,9 @@
                     "data_type": "string",
                     "example_values": [
                         "ba9e3378-9e5c-4159-a022-e6fee173bf35"
+                    ],
+                    "contains": [
+                        "entra risky userid"
                     ]
                 },
                 {
@@ -436,6 +439,14 @@
                     "example_values": [
                         1
                     ]
+                },
+                {
+                    "data_path": "action_result.parameter.filter",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.orderby",
+                    "data_type": "string"
                 }
             ],
             "render": {
@@ -463,12 +474,12 @@
                 "filter": {
                     "description": "Filter risky users based on property",
                     "data_type": "string",
-                    "order": 2
+                    "order": 1
                 },
                 "orderby": {
                     "description": "Sort the risky users based on property",
                     "data_type": "string",
-                    "order": 3
+                    "order": 2
                 }
             },
             "output": [
@@ -582,6 +593,14 @@
                     "example_values": [
                         1
                     ]
+                },
+                {
+                    "data_path": "action_result.parameter.filter",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.orderby",
+                    "data_type": "string"
                 }
             ],
             "render": {
@@ -623,7 +642,40 @@
                     "order": 3
                 }
             },
-            "output": [],
+            "output": [
+                {
+                    "data_path": "action_result.parameter.limit",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.parameter.offset",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.parameter.filter",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.orderby",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
             "render": {
                 "type": "custom",
                 "width": 10,
@@ -976,6 +1028,10 @@
                     "example_values": [
                         1
                     ]
+                },
+                {
+                    "data_path": "action_result.parameter.orderby",
+                    "data_type": "string"
                 }
             ],
             "render": {
@@ -1276,6 +1332,9 @@
                     "data_type": "string",
                     "example_values": [
                         "32753854-58f3-40f2-bef7-ae9db94b1800"
+                    ],
+                    "contains": [
+                        "entra signin id"
                     ]
                 },
                 {
@@ -1309,8 +1368,48 @@
     "pip39_dependencies": {
         "wheel": [
             {
+                "module": "PyJWT",
+                "input_file": "wheels/py3/PyJWT-2.10.1-py3-none-any.whl"
+            },
+            {
+                "module": "cffi",
+                "input_file": "wheels/py39/cffi-2.0.0-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
+            },
+            {
+                "module": "cryptography",
+                "input_file": "wheels/py3/cryptography-45.0.7-cp37-abi3-manylinux_2_28_x86_64.whl"
+            },
+            {
                 "module": "msal",
                 "input_file": "wheels/py3/msal-1.31.0-py3-none-any.whl"
+            },
+            {
+                "module": "pycparser",
+                "input_file": "wheels/py3/pycparser-2.23-py3-none-any.whl"
+            }
+        ]
+    },
+    "pip313_dependencies": {
+        "wheel": [
+            {
+                "module": "PyJWT",
+                "input_file": "wheels/py3/PyJWT-2.10.1-py3-none-any.whl"
+            },
+            {
+                "module": "cffi",
+                "input_file": "wheels/py313/cffi-2.0.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
+            },
+            {
+                "module": "cryptography",
+                "input_file": "wheels/py3/cryptography-45.0.7-cp311-abi3-manylinux_2_28_x86_64.whl"
+            },
+            {
+                "module": "msal",
+                "input_file": "wheels/py3/msal-1.31.0-py3-none-any.whl"
+            },
+            {
+                "module": "pycparser",
+                "input_file": "wheels/py3/pycparser-2.23-py3-none-any.whl"
             }
         ]
     }

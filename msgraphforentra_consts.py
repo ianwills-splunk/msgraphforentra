@@ -30,7 +30,7 @@ MSGENTRA_CONFIG_CERTIFICATE_THUMBPRINT = "certificate_thumbprint"
 MSGENTRA_CONFIG_CERTIFICATE_PRIVATE_KEY = "certificate_private_key"  # pragma: allowlist secret
 
 MSGENTRA_CBA_FIELDS_ERROR = (
-    "Client Secret was not specified, in which case Certificate Thumbprint and " "Certificate Private Key Location are required"
+    "Client Secret was not specified, in which case Certificate Thumbprint and Certificate Private Key Location are required"
 )
 MSGENTRA_CBA_AUTH_ERROR = "Certificate Based Authentication requires both Certificate Thumbprint and Certificate Private Key"
 MSGENTRA_FIELD_CONFLICT_ERROR = (
@@ -48,7 +48,7 @@ MSGENTRA_CODE_STRING = "code"
 MSGENTRA_REFRESH_TOKEN_STRING = "refresh_token"
 MSGENTRA_ID_TOKEN_STRING = "id_token"
 MSGENTRA_CLIENT_CREDENTIALS_STRING = "client_credentials"
-MSGENTRA_BASE_URL_NOT_FOUND_MSG = "Splunk SOAR Base URL not found in System Settings. " "Please specify this value in System Settings"
+MSGENTRA_BASE_URL_NOT_FOUND_MSG = "Splunk SOAR Base URL not found in System Settings. Please specify this value in System Settings"
 MSGENTRA_AUTHORIZE_URL = (
     "/{tenant_id}/oauth2/authorize?client_id={client_id}&redirect_uri={redirect_uri}"
     "&response_type={response_type}&state={state}&resource={resource}"
@@ -118,7 +118,7 @@ MSGENTRA_LIST_INCIDENTS_ENDPOINT = "/security/incidents"
 MSGENTRA_DEFAULT_LOOKBACK_DAYS = 7
 
 MSGENTRA_RUN_CONNECTIVITY_MSG = (
-    "Please run test connectivity first to complete authorization flow and " "generate a token that the app can use to make calls to the server "
+    "Please run test connectivity first to complete authorization flow and generate a token that the app can use to make calls to the server "
 )
 MSGENTRA_LIMIT_KEY = "'limit' action parameter"
 MSGENTRA_OFFSET_KEY = "'offset' action parameter"

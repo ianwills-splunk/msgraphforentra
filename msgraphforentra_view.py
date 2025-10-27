@@ -16,7 +16,6 @@
 
 
 def get_ctx_result(result):
-
     ctx_result = {}
     param = result.get_param()
     summary = result.get_summary()
